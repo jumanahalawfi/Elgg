@@ -12,6 +12,9 @@ return [
             'menu:topbar' => [
                 'Elgg\bin\Menus\Topbar::register' => [],
             ],
+            'menu:topbar' => [
+                'Elgg\Bin\Menus\Topbar::register' => [],
+            ],
         ]
     ]
 ];

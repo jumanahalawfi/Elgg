@@ -75,6 +75,10 @@ class Entity {
         $restore_url = elgg_generate_action_url('entity/restore',[
             'guid' => $entity->guid,
         ]);
+
+        $post_restore_url = elgg_generate_action_url('entity/postrestore',[
+            'guid' => $entity->guid,
+        ]); // test popup form
 		
 		if (empty($delete_url) || !$entity->canDelete()) {
 			return;
@@ -83,6 +87,7 @@ class Entity {
 		/* @var $return MenuItems */
 		$return = $event->getValue();
 
+        // TODO: SHOULDN'T THIS WHOLE BLOCK ONLY BE ACCESSIBLE FROM TEMPORARY BIN???
         if ($entity->soft_deleted === 'yes'){
             $container = get_entity($entity->container_guid);
             if ($container->soft_deleted === 'yes' && !($container instanceof \ElggUser)){
@@ -91,7 +96,7 @@ class Entity {
                     'icon' => 'arrow-up',
                     'text' => elgg_echo('restore and move'),
                     'title' => elgg_echo('restore:this'),
-                    'href' => $restore_url,
+                    'href' => 'ajax/form/actions/postrestore', // should only works after moving this menu item to blog
                     'confirm' => elgg_echo('restoreandmoveconfirm'),
                     'priority' => 900,
                 ]);
