@@ -333,4 +333,22 @@ class Entities extends Repository {
 
 		return $qb->merge($parts, $boolean);
 	}
+
+	/**
+	 * new 
+	 */
+
+	public function getContainterGuidFromGuid($guid) {
+		$entity = get_entity($guid);
+
+		if($entity) {
+			$container = get_entity($entity->container_guid);
+			if ($container && $container->soft_deleted === 'yes') {
+				return true;
+			}
+		} 
+		
+		return false;
+	}
+
 }
