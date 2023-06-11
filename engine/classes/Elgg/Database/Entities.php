@@ -334,21 +334,22 @@ class Entities extends Repository {
 		return $qb->merge($parts, $boolean);
 	}
 
-	/**
-	 * new 
-	 */
+    /**
+     * Retrieve the container GUID and check if it is soft-deleted.
+     *
+     * @param int $guid The GUID of the entity to retrieve the container GUID from.
+     * @return bool Returns true if the container entity is soft deleted, false otherwise.
+     */
 
-	public function getContainterGuidFromGuid($guid) {
-		$entity = get_entity($guid);
-
-		if($entity) {
-			$container = get_entity($entity->container_guid);
-			if ($container && $container->soft_deleted === 'yes') {
-				return true;
-			}
-		} 
-		
-		return false;
-	}
+    public function getContainerGuidFromGuid($guid) {
+        $entity = get_entity($guid);
+        if ($entity) {
+            $containerEntity = $entity->getContainerEntity();
+            if ($containerEntity && $containerEntity->soft_deleted === 'yes') {
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
