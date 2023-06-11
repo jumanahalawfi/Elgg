@@ -30,6 +30,9 @@ if ($entity->soft_deleted = 'yes') {
     }
     get_entity($deleter_guid)->removeRelationship($entity->guid, 'deleted_by');
 }
+
+
+
 // determine forward URL
 $forward_url = get_input('forward_url');
 if (!empty($forward_url)) {

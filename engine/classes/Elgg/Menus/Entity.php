@@ -77,6 +77,13 @@ class Entity {
             'deleter_guid' => elgg_get_logged_in_user_guid(),
             'guid' => $entity->guid,
         ]);
+
+
+        $choose_restore_destination_url = elgg_generate_action_url('entity/chooserestoredestination',[
+            'deleter_guid' => elgg_get_logged_in_user_guid(),
+            'guid' => $entity->guid,
+        ]);
+
 		
 		if (empty($delete_url) || !$entity->canDelete()) {
 			return;
@@ -93,7 +100,7 @@ class Entity {
                     'icon' => 'arrow-up',
                     'text' => elgg_echo('restore and move'),
                     'title' => elgg_echo('restore:this'),
-                    'href' => $restore_url,
+                    'href' => $choose_restore_destination_url,
                     'confirm' => elgg_echo('restoreandmoveconfirm'),
                     'priority' => 900,
                 ]);
