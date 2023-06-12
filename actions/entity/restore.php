@@ -5,7 +5,9 @@
 
 $guid = (int) get_input('guid');
 $deleter_guid = (int) get_input('deleter_guid');
+$to_be_moved = (bool) get_input('to_be_moved');
 
+$forward_url = ''; // fail-safe, not sure if initialization is necessary
 
 $entity = get_entity($guid);
 if (!$entity instanceof \ElggEntity) {
@@ -31,7 +33,16 @@ if ($entity->soft_deleted = 'yes') {
     get_entity($deleter_guid)->removeRelationship($entity->guid, 'deleted_by');
 }
 
+// if to_be_moved == true, redirect to the chooserestoredestination action
+if ($to_be_moved) {
+    $forward_url = elgg_generate_action_url('entity/chooserestoredestination',[
+        'deleter_guid' => elgg_get_logged_in_user_guid(),
+        'guid' => $entity->guid,
+    ]);
 
+    return elgg_redirect_response($forward_url);
+    exit; // is this required?
+}
 
 // determine forward URL
 $forward_url = get_input('forward_url');
