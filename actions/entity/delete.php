@@ -25,9 +25,7 @@ $container = $entity->getContainerEntity();
 
 $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
-//TODO: discuss: above call returns nothing, but searching for 'commentable' does - why?
-
-if (empty($soft_deletable_entities)) {
+if (isset($soft_deletable_entities[$type]) && in_array($subtype, $soft_deletable_entities[$type])) {
     if (!$entity->softDelete()) {
         return elgg_error_response(elgg_echo('entity:delete:fail', [$display_name]));
     }

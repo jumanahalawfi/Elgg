@@ -1547,8 +1547,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
         }
 
         $this->disableAnnotations();
-
-        //TODO: Link to database team method to write to softDelete column
         $softDeleted = _elgg_services()->entityTable->softDelete($this);
 
         $time_soft_deleted = isset($this->attributes['time_soft_deleted']) ? (int) $this->attributes['time_soft_deleted'] : $now;
@@ -1586,7 +1584,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
         }
 
         $result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($recursive) {
-            //TODO: Link to database team method to write to softDelete column
+
             $result = _elgg_services()->entityTable->restore($this);
 
             $this->enableAnnotations();
@@ -1612,7 +1610,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
         if ($result) {
             $this->attributes['softDeleted'] = 'no';
-            //TODO: Find out what enable events do, how to adapt to restore
+
             _elgg_services()->events->triggerAfter('restore', $this->type, $this);
         }
 
