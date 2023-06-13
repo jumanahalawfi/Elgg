@@ -37,7 +37,9 @@ Available commands
     vendor/bin/elgg-cli list
 
     # Install Elgg
-    vendor/bin/elgg-cli install [-c|--config CONFIG]
+    # no-plugins: This is an optional argument, it'll prevent the activation of any plugins
+    # config: (string) Path to php file that returns an array with installation configuration, if not provided the config parameters will be questioned in the console.
+    vendor/bin/elgg-cli install [--no-plugins] [-c|--config CONFIG]
 
     # Seed the database with fake entities
     # limit: (int) number of items to seed
@@ -82,6 +84,7 @@ Available commands
     # Activate plugins
     # List plugin ids separating them with spaces: vendor/bin/elgg-cli plugins:activate activity blog
     # use -f flag to resolve conflicts and dependencies
+    # you can set a plugin priority by using the format plugin_id:priority (eg. blog:last)
     vendor/bin/elgg-cli plugins:activate [<plugins>] [-f|--force]
 
     # Deactivate plugins
