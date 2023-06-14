@@ -1506,8 +1506,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 *
 	 * @note Internal: Soft deleting an entity sets the 'soft_deleted' column to 'yes'.
 	 *
-	 * @param int $deleter_guid   GUID of the deleting user
-	 * @param bool   $recursive Recursively soft delete all contained entities?
+	 * @param int $deleter_guid GUID of the deleting user
+	 * @param bool $recursive Recursively soft delete all contained entities?
 	 *
 	 * @return bool
 	 * @see \ElggEntity::restore()
@@ -1596,12 +1596,11 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	/**
 	 * Restore the entity
 	 *
-	 * @param int $deleter_guid   GUID of the deleting user
+	 * @param int $deleter_guid GUID of the deleting user
 	 * @param bool $recursive Recursively restores all entities soft deleted with the entity?
 	 * @see access_show_hiden_entities()
 	 * @return bool
 	 */
-
 	public function restore(int $deleter_guid, bool $recursive = true): bool {
 		if (empty($this->guid)) {
 			return false;
