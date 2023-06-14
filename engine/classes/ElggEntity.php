@@ -74,12 +74,13 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_updated',
 		'last_action',
 	];
-    /**
-     * @var mixed|string
-     */
-    public mixed $soft_deleted;
 
-    /**
+	/**
+	 * @var mixed|string
+	 */
+	public mixed $soft_deleted;
+
+	/**
 	 * Holds metadata until entity is saved.  Once the entity is saved,
 	 * metadata are written immediately to the database.
 	 * @var array
@@ -1511,7 +1512,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 * @return bool
 	 * @see \ElggEntity::restore()
 	 */
-
 	public function softDelete(int $deleter_guid, bool $recursive = true): bool {
 
 		if (!$this->guid) {
@@ -1596,7 +1596,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	/**
 	 * Restore the entity
 	 *
-	 * @param bool $recursive Recursively restores all entities disabled with the entity?
+	 * @param int $deleter_guid   GUID of the deleting user
+	 * @param bool $recursive Recursively restores all entities soft deleted with the entity?
 	 * @see access_show_hiden_entities()
 	 * @return bool
 	 */
@@ -1839,11 +1840,11 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 	/**
 	 * this method overrides an entity id with id of the group/user.
-	 * @param $entity_guid
-	 * @param $group_guid
+	 * @param int $entity_guid the GUID of the entity which will have its container overridden
+	 * @param int $group_guid the GUID of the new container
 	 * @return bool
 	 */
-	public static function overrideEntityID($entity_guid, $group_guid) {
+	public static function overrideEntityID(int $entity_guid, int $group_guid) {
 		$entity = get_entity($entity_guid);
 
 		if (!$entity) {
