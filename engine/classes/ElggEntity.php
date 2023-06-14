@@ -1507,7 +1507,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 * @note Internal: Soft deleting an entity sets the 'soft_deleted' column to 'yes'.
 	 *
 	 * @param int  $deleter_guid GUID of the deleting user
-	 * @param bool    $recursive Recursively soft delete all contained entities?
+	 * @param bool $recursive    Recursively soft delete all contained entities?
 	 *
 	 * @return bool
 	 * @see \ElggEntity::restore()
@@ -1597,7 +1597,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 * Restore the entity
 	 *
 	 * @param int  $deleter_guid GUID of the deleting user
-	 * @param bool    $recursive Recursively restores all entities soft deleted with the entity?
+	 * @param bool $recursive    Recursively restores all entities soft deleted with the entity?
 	 * @see access_show_hiden_entities()
 	 * @return bool
 	 */
@@ -1840,7 +1840,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	/**
 	 * this method overrides an entity id with id of the group/user.
 	 * @param int $entity_guid the GUID of the entity which will have its container overridden
-	 * @param int  $group_guid the GUID of the new container
+	 * @param int $group_guid  the GUID of the new container
 	 * @return bool
 	 */
 	public static function overrideEntityID(int $entity_guid, int $group_guid) {
