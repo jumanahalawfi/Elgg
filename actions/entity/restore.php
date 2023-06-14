@@ -6,8 +6,9 @@
 $guid = (int) get_input('guid');
 $deleter_guid = (int) get_input('deleter_guid');
 
-
-$entity = get_entity($guid);
+$entity = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($guid){
+    return get_entity($guid);
+});
 if (!$entity instanceof \ElggEntity) {
     return elgg_error_response(elgg_echo('entity:restore:item_not_found'));
 }
