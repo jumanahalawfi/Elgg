@@ -74,8 +74,12 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_updated',
 		'last_action',
 	];
+    /**
+     * @var mixed|string
+     */
+    public mixed $soft_deleted;
 
-	/**
+    /**
 	 * Holds metadata until entity is saved.  Once the entity is saved,
 	 * metadata are written immediately to the database.
 	 * @var array
@@ -1490,7 +1494,23 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		return true;
 	}
 
-	//**SOFT DELETE TESTING */
+	/**
+	 * Softdelete this entity.
+	 *
+	 * Softdeleted entities are not returned by getter functions.
+	 * To restore an entity, use {@link \ElggEntity::restore()}.
+	 *
+	 * Recursively soft deleting an entity will soft delete all entities
+	 * owned or contained by the parent entity.
+	 *
+	 * @note Internal: Soft deleting an entity sets the 'soft_deleted' column to 'yes'.
+	 *
+	 * @param int $deleter_guid   GUID of the deleting user
+	 * @param bool   $recursive Recursively soft delete all contained entities?
+	 *
+	 * @return bool
+	 * @see \ElggEntity::restore()
+	 */
 
 	public function softDelete(int $deleter_guid, bool $recursive = true): bool {
 
@@ -1551,12 +1571,10 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 		$this->disableAnnotations();
 
-		//TODO: Link to database team method to write to softDelete column
 		$softDeleted = _elgg_services()->entityTable->softDelete($this);
 
 		$time_soft_deleted = isset($this->attributes['time_soft_deleted']) ? (int) $this->attributes['time_soft_deleted'] : $now;
 
-		// Call updateTimeSoftDeleted function to update the time_soft_deleted attribute
 		$this->updateTimeSoftDeleted($time_soft_deleted);
 
 
@@ -1575,6 +1593,14 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		return $softDeleted;
 	}
 
+	/**
+	 * Restore the entity
+	 *
+	 * @param bool $recursive Recursively restores all entities disabled with the entity?
+	 * @see access_show_hiden_entities()
+	 * @return bool
+	 */
+
 	public function restore(int $deleter_guid, bool $recursive = true): bool {
 		if (empty($this->guid)) {
 			return false;
@@ -1589,7 +1615,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		}
 
 		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($deleter_guid, $recursive) {
-			//TODO: Link to database team method to write to softDelete column
+
 			$result = _elgg_services()->entityTable->restore($this);
 
 			$this->enableAnnotations();
@@ -1617,7 +1643,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 		if ($result) {
 			$this->attributes['softDeleted'] = 'no';
-			//TODO: Find out what enable events do, how to adapt to restore
 			_elgg_services()->events->triggerAfter('restore', $this->type, $this);
 		}
 
