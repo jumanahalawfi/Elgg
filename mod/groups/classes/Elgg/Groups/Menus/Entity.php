@@ -94,4 +94,19 @@ class Entity {
 
 		return $return;
 	}
+
+    public static function registerSelectButton(){
+
+        $return[] = \ElggMenuItem::factory([
+            'name' => 'likes',
+            'href' => '#',
+            'icon' => 'thumbs-up',
+            'text' => elgg_echo('select'),
+            'title' => elgg_echo('select'),
+            'priority' => 400,
+            'deps' => ['elgg/likes'],
+        ]);
+
+        return $return;
+    }
 }

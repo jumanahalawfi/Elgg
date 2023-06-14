@@ -226,7 +226,8 @@ return [
 				'Elgg\Groups\Menus\Entity::register' => [],
 				'Elgg\Groups\Menus\Entity::registerFeature' => [],
                 'Elgg\Groups\Menus\Entity::registerRestore' => [],
-			],
+                'Elgg\Groups\Menus\Entity::registerSelectButton' => [],
+            ],
 			'menu:filter:groups/all' => [
 				'Elgg\Groups\Menus\Filter::registerGroupsAll' => [],
 				'Elgg\Menus\FilterSortItems::registerTimeCreatedSorting' => [],

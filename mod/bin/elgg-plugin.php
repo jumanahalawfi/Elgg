@@ -4,8 +4,12 @@ return [
     'routes' => [
         'default:bin' => [
             'path' => '/bin',
-            'resource' => 'bin',
+            'resource' => 'bin/bin',
         ],
+        'move:bin' => [
+            'path' => '/bin/move',
+            'resource' => 'bin/restoreMove',
+        ]
     ],
     'events' => [
         'register' => [
