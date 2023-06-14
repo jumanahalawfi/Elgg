@@ -33,9 +33,9 @@ class Entity {
 			return;
 		}
 
-        if ($entity->soft_deleted === 'yes'){
-            return;
-        }
+		if ($entity->soft_deleted === 'yes') {
+			return;
+		}
 		
 		/* @var $return MenuItems */
 		$return = $event->getValue();
@@ -69,19 +69,19 @@ class Entity {
 		}
 		
 		$delete_url = elgg_generate_action_url('entity/delete', [
-            'deleter_guid' => elgg_get_logged_in_user_guid(),
-            'guid' => $entity->guid,
+			'deleter_guid' => elgg_get_logged_in_user_guid(),
+			'guid' => $entity->guid,
 		]);
 
-        $restore_url = elgg_generate_action_url('entity/restore',[
-            'deleter_guid' => elgg_get_logged_in_user_guid(),
-            'guid' => $entity->guid,
-        ]);
+		$restore_url = elgg_generate_action_url('entity/restore', [
+			'deleter_guid' => elgg_get_logged_in_user_guid(),
+			'guid' => $entity->guid,
+		]);
 
-        $restore_urlaction = elgg_generate_url('move:bin',[
-            'deleter_guid' => elgg_get_logged_in_user_guid(),
-            'guid' => $entity->guid,
-        ]);
+		$restore_urlaction = elgg_generate_url('move:bin', [
+			'deleter_guid' => elgg_get_logged_in_user_guid(),
+			'guid' => $entity->guid,
+		]);
 		
 		if (empty($delete_url) || !$entity->canDelete()) {
 			return;
@@ -90,30 +90,30 @@ class Entity {
 		/* @var $return MenuItems */
 		$return = $event->getValue();
 
-        if ($entity->soft_deleted === 'yes'){
-            $container = get_entity($entity->container_guid);
-            if ($container->soft_deleted === 'yes' && !($container instanceof \ElggUser)){
-                $return[] = \ElggMenuItem::factory([
-                    'name' => 'restore and move',
-                    'icon' => 'arrow-up',
-                    'text' => elgg_echo('restore and move'),
-                    'title' => elgg_echo('restore:this'),
-                    'href' => $restore_urlaction,
-                    'confirm' => elgg_echo('restoreandmoveconfirm'),
-                    'priority' => 900,
-                ]);
-            }else{
-                $return[] = \ElggMenuItem::factory([
-                    'name' => 'restore',
-                    'icon' => 'settings',
-                    'text' => elgg_echo('restore'),
-                    'title' => elgg_echo('restore:this'),
-                    'href' => $restore_url,
-                    'confirm' => elgg_echo('restoreconfirm'),
-                    'priority' => 900,
-                ]);
-            }
-        }
+		if ($entity->soft_deleted === 'yes') {
+			$container = get_entity($entity->container_guid);
+			if ($container->soft_deleted === 'yes' && !($container instanceof \ElggUser)) {
+				$return[] = \ElggMenuItem::factory([
+					'name' => 'restore and move',
+					'icon' => 'arrow-up',
+					'text' => elgg_echo('restore and move'),
+					'title' => elgg_echo('restore:this'),
+					'href' => $restore_urlaction,
+					'confirm' => elgg_echo('restoreandmoveconfirm'),
+					'priority' => 900,
+				]);
+			} else {
+				$return[] = \ElggMenuItem::factory([
+					'name' => 'restore',
+					'icon' => 'settings',
+					'text' => elgg_echo('restore'),
+					'title' => elgg_echo('restore:this'),
+					'href' => $restore_url,
+					'confirm' => elgg_echo('restoreconfirm'),
+					'priority' => 900,
+				]);
+			}
+		}
 
 		$return[] = \ElggMenuItem::factory([
 			'name' => 'delete',

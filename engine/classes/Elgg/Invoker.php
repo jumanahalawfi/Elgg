@@ -39,7 +39,7 @@ class Invoker {
 	 *                          ELGG_ENFORCE_ACCESS
 	 *                          ELGG_SHOW_DISABLED_ENTITIES
 	 *                          ELGG_HIDE_DISABLED_ENTITIES
-     *                          ELGG_SHOW_SOFT_DELETED_ENTITIES
+	 *                          ELGG_SHOW_SOFT_DELETED_ENTITIES
 	 * @param \Closure $closure Callable to call
 	 *
 	 * @return mixed
@@ -61,10 +61,10 @@ class Invoker {
 			$this->session_manager->setDisabledEntityVisibility(false);
 		}
 
-        $sd = $this->session_manager->getSoftDeletedEntityVisibility();
-        if ($flags & ELGG_SHOW_SOFT_DELETED_ENTITIES) {
-            $this->session_manager->setSoftDeletedEntityVisibility(true);
-        }
+		$sd = $this->session_manager->getSoftDeletedEntityVisibility();
+		if ($flags & ELGG_SHOW_SOFT_DELETED_ENTITIES) {
+			$this->session_manager->setSoftDeletedEntityVisibility(true);
+		}
 		
 		$system_log_enabled = null;
 		$system_log_service = null;
@@ -86,7 +86,7 @@ class Invoker {
 		$restore = function () use ($ia, $ha, $sd, $system_log_service, $system_log_enabled) {
 			$this->session_manager->setIgnoreAccess($ia);
 			$this->session_manager->setDisabledEntityVisibility($ha);
-            $this->session_manager->setSoftDeletedEntityVisibility($sd);
+			$this->session_manager->setSoftDeletedEntityVisibility($sd);
 			
 			if (isset($system_log_service)) {
 				if ($system_log_enabled) {

@@ -23,9 +23,9 @@ class Entity {
 			return;
 		}
 
-        if ($entity->soft_deleted === 'yes') {
-            return;
-        }
+		if ($entity->soft_deleted === 'yes') {
+			return;
+		}
 		
 		if (!$entity->canEdit()) {
 			return;
