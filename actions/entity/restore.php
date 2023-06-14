@@ -5,9 +5,11 @@
 
 $guid = (int) get_input('guid');
 $deleter_guid = (int) get_input('deleter_guid');
+$to_be_moved = get_input('to_be_moved');
 
-
-$entity = get_entity($guid);
+$entity = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($guid){
+    return get_entity($guid);
+});
 if (!$entity instanceof \ElggEntity) {
     return elgg_error_response(elgg_echo('entity:restore:item_not_found'));
 }
@@ -25,9 +27,18 @@ $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 
 if ($entity->soft_deleted = 'yes') {
-    if (!$entity->restore($deleter_guid)) {
-        return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
+    if ($to_be_moved) {
+        $forward_url = elgg_generate_url('move:bin',[
+            'entity_guid' => $entity->guid,
+        ]);
+
+        return elgg_redirect_response($forward_url);
+    }else{
+        if (!$entity->restore($deleter_guid)) {
+            return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
+        }
     }
+
 }
 // determine forward URL
 $forward_url = get_input('forward_url');

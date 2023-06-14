@@ -74,14 +74,11 @@ class Entity {
 		]);
 
         $restore_url = elgg_generate_action_url('entity/restore',[
+            'to_be_moved' => false,
             'deleter_guid' => elgg_get_logged_in_user_guid(),
             'guid' => $entity->guid,
         ]);
 
-        $restore_urlaction = elgg_generate_url('move:bin',[
-            'deleter_guid' => elgg_get_logged_in_user_guid(),
-            'guid' => $entity->guid,
-        ]);
 		
 		if (empty($delete_url) || !$entity->canDelete()) {
 			return;
@@ -93,12 +90,19 @@ class Entity {
         if ($entity->soft_deleted === 'yes'){
             $container = get_entity($entity->container_guid);
             if ($container->soft_deleted === 'yes' && !($container instanceof \ElggUser)){
+
+                $restoremove_url = elgg_generate_action_url('entity/restore',[
+                    'to_be_moved' => true,
+                    'deleter_guid' => elgg_get_logged_in_user_guid(),
+                    'guid' => $entity->guid,
+                ]);
+
                 $return[] = \ElggMenuItem::factory([
                     'name' => 'restore and move',
                     'icon' => 'arrow-up',
                     'text' => elgg_echo('restore and move'),
                     'title' => elgg_echo('restore:this'),
-                    'href' => $restore_urlaction,
+                    'href' => $restoremove_url,
                     'confirm' => elgg_echo('restoreandmoveconfirm'),
                     'priority' => 900,
                 ]);

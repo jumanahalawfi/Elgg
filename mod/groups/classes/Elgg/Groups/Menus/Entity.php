@@ -95,16 +95,24 @@ class Entity {
 		return $return;
 	}
 
-    public static function registerSelectButton(){
+    public static function registerSelectButton(\Elgg\Event $event){
+
+        $entity = $event->getEntityParam();
+        if (!$entity instanceof \ElggGroup) {
+            return;
+        }
+
+        if($entity->soft_deleted === 'yes'){
+            return;
+        }
 
         $return[] = \ElggMenuItem::factory([
-            'name' => 'likes',
+            'name' => 'select',
             'href' => '#',
             'icon' => 'thumbs-up',
             'text' => elgg_echo('select'),
             'title' => elgg_echo('select'),
-            'priority' => 400,
-            'deps' => ['elgg/likes'],
+            'priority' => 100,
         ]);
 
         return $return;

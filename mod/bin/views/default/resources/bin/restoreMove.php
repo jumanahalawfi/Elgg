@@ -1,5 +1,10 @@
 <?php
 
+$entity_guid = get_input('entity_guid');
+$entity = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($entity_guid){
+    return get_entity($entity_guid);
+});
+
 $content = elgg_list_entities([
     'type' => 'group',
     'relationship' => 'member',
@@ -12,12 +17,10 @@ $content = elgg_list_entities([
     'no_results' => elgg_echo('groups:none'),
 ]);
 
-$sidebar = elgg_view('groups/sidebar/find');
 
 
-echo elgg_view_page('groups:all', [
+echo elgg_view_page("choose a group from the list", [
     'content' => $content,
-    'sidebar' => $sidebar,
     'filter_id' => 'groups/member',
     'filter_value' => 'member',
 ]);
