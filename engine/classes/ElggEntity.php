@@ -29,17 +29,18 @@ use Elgg\Traits\Entity\Subscriptions;
  *
  * @tip Plugin authors will want to extend the \ElggObject class, not this class.
  *
- * @property-read  string $type           object, user, group, or site (read-only after save)
- * @property-read  string $subtype        Further clarifies the nature of the entity
- * @property-read  int    $guid           The unique identifier for this entity (read only)
- * @property       int    $owner_guid     The GUID of the owner of this entity (usually the creator)
- * @property       int    $container_guid The GUID of the entity containing this entity
- * @property       int    $access_id      Specifies the visibility level of this entity
- * @property       int    $time_created   A UNIX timestamp of when the entity was created
- * @property-read  int    $time_updated   A UNIX timestamp of when the entity was last updated (automatically updated on save)
- * @property-read  int    $last_action    A UNIX timestamp of when the entity was last acted upon
- * @property-read  int    $time_soft_deleted    A UNIX timestamp of when the entity was soft deleted
- * @property-read  string $enabled        Is this entity enabled ('yes' or 'no')
+ * @property-read  string $type              object, user, group, or site (read-only after save)
+ * @property-read  string $subtype           Further clarifies the nature of the entity
+ * @property-read  int    $guid              The unique identifier for this entity (read only)
+ * @property       int    $owner_guid        The GUID of the owner of this entity (usually the creator)
+ * @property       int    $container_guid    The GUID of the entity containing this entity
+ * @property       int    $access_id         Specifies the visibility level of this entity
+ * @property       int    $time_created      A UNIX timestamp of when the entity was created
+ * @property-read  int    $time_updated      A UNIX timestamp of when the entity was last updated (automatically updated on save)
+ * @property-read  int    $last_action       A UNIX timestamp of when the entity was last acted upon
+ * @property-read  int    $time_soft_deleted A UNIX timestamp of when the entity was soft deleted
+ * @property-read  string $soft_deleted      Is this entity soft-deleted ('yes' or 'no')
+ * @property-read  string $enabled           Is this entity enabled ('yes' or 'no')
  *
  * Metadata (the above are attributes)
  * @property       string $location       A location of the entity
