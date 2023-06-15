@@ -78,6 +78,12 @@ class Entity {
             'deleter_guid' => elgg_get_logged_in_user_guid(),
             'guid' => $entity->guid,
         ]);
+
+        $restore_and_move_url = elgg_generate_action_url('entity/chooserestoredestination',[
+            'to_be_moved' => false, // default
+            'deleter_guid' => elgg_get_logged_in_user_guid(),
+            'guid' => $entity->guid,
+        ]);
 		
 		if (empty($delete_url) || !$entity->canDelete()) {
 			return;
@@ -102,8 +108,13 @@ class Entity {
                     'icon' => 'arrow-up',
                     'text' => elgg_echo('restore and move'),
                     'title' => elgg_echo('restore:this'),
-                    'href' => $restore_url,
-                    'confirm' => elgg_echo('restoreandmoveconfirm'),
+                    'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
+                        'address' => $entity->getURL(),
+                        'title' => $entity->getDisplayName(),
+                        'entity_guid' => $entity->guid,
+                    ]),
+                    //'confirm' => elgg_echo('restoreandmoveconfirm'),
+                    'link_class' => 'elgg-lightbox', // !!
                     'priority' => 900,
                 ]);
             }else{
