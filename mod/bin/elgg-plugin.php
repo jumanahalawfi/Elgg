@@ -4,7 +4,7 @@ return [
 	'routes' => [
 		'default:bin' => [
 			'path' => '/bin',
-			'resource' => 'bin',
+			'resource' => 'bin/bin',
 		],
 	],
 	'events' => [
