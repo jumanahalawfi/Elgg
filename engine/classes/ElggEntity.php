@@ -76,11 +76,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	];
 
 	/**
-	 * @var mixed|string
-	 */
-	public mixed $soft_deleted;
-
-	/**
 	 * Holds metadata until entity is saved.  Once the entity is saved,
 	 * metadata are written immediately to the database.
 	 * @var array
@@ -1843,7 +1838,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 * @param int $group_guid  the GUID of the new container
 	 * @return bool
 	 */
-	public static function overrideEntityID(int $entity_guid, int $group_guid) {
+	public static function overrideEntityContainerID(int $entity_guid, String $type, String $subtype, int $group_guid) {
 		$entity = get_entity($entity_guid);
 
 		if (!$entity) {
@@ -1855,6 +1850,12 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if (!$group) {
 			return false;
 		}
+
+        if(!$group->canWriteToContainer($type, $subtype)){
+            return false;
+        }
+
+        //check if $group allows $entity type. If not return false.
 
 		$entity->container_guid = $group->guid;
 
