@@ -28,9 +28,9 @@ class Social {
 			return;
 		}
 
-        if($entity->soft_deleted === 'yes'){
-            return;
-        }
+		if ($entity->soft_deleted === 'yes') {
+			return;
+		}
 		
 		$return = $event->getValue();
 	

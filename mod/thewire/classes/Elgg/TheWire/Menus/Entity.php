@@ -26,9 +26,9 @@ class Entity {
 			return;
 		}
 
-        if ($entity->soft_deleted === 'yes') {
-            return;
-        }
+		if ($entity->soft_deleted === 'yes') {
+			return;
+		}
 
 		$menu = $event->getValue();
 		$menu->remove('edit');

@@ -59,7 +59,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_updated',
 		'last_action',
 		'enabled',
-        'soft_deleted'
+		'soft_deleted'
 	];
 
 	/**
@@ -74,6 +74,11 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_updated',
 		'last_action',
 	];
+
+	/**
+	 * @var mixed|string
+	 */
+	public mixed $soft_deleted;
 
 	/**
 	 * Holds metadata until entity is saved.  Once the entity is saved,
@@ -1490,140 +1495,159 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		return true;
 	}
 
-    //**SOFT DELETE TESTING */
+	/**
+	 * Softdelete this entity.
+	 *
+	 * Softdeleted entities are not returned by getter functions.
+	 * To restore an entity, use {@link \ElggEntity::restore()}.
+	 *
+	 * Recursively soft deleting an entity will soft delete all entities
+	 * owned or contained by the parent entity.
+	 *
+	 * @note Internal: Soft deleting an entity sets the 'soft_deleted' column to 'yes'.
+	 *
+	 * @param int  $deleter_guid GUID of the deleting user
+	 * @param bool $recursive    Recursively soft delete all contained entities?
+	 *
+	 * @return bool
+	 * @see \ElggEntity::restore()
+	 */
+	public function softDelete(int $deleter_guid, bool $recursive = true): bool {
 
-    public function softDelete(int $deleter_guid, bool $recursive = true): bool {
-
-        if (!$this->guid) {
-            return false;
-        }
-
-
-        if (!_elgg_services()->events->trigger('softDelete', $this->type, $this)) {
-            return false;
-        }
-
-        if (!$this->canDelete()) {
-            return false;
-        }
-
-        if ($this instanceof ElggUser && !$this->isBanned()) {
-            // temporarily ban to prevent using the site during disable
-            $this->ban();
-            $unban_after = true;
-        } else {
-            $unban_after = false;
-        }
+		if (!$this->guid) {
+			return false;
+		}
 
 
-        $guid = (int) $this->guid;
+		if (!_elgg_services()->events->trigger('softDelete', $this->type, $this)) {
+			return false;
+		}
+
+		if (!$this->canDelete()) {
+			return false;
+		}
+
+		if ($this instanceof ElggUser && !$this->isBanned()) {
+			// temporarily ban to prevent using the site during disable
+			$this->ban();
+			$unban_after = true;
+		} else {
+			$unban_after = false;
+		}
 
 
-        if ($recursive) {
-            elgg_call(ELGG_IGNORE_ACCESS | ELGG_HIDE_DISABLED_ENTITIES, function () use ($deleter_guid, $guid) {
-                $base_options = [
-                    'wheres' => [
-                        function(QueryBuilder $qb, $main_alias) use ($guid) {
-                            return $qb->compare("{$main_alias}.guid", '!=', $guid, ELGG_VALUE_GUID);
-                        },
-                    ],
-                    'limit' => false,
-                    'batch' => true,
-                    'batch_inc_offset' => false,
-                ];
-
-                foreach (['owner_guid', 'container_guid'] as $db_column) {
-                    $options = $base_options;
-                    $options[$db_column] = $guid;
-
-                    $subentities = elgg_get_entities($options);
-                    /* @var $subentity \ElggEntity */
-                    foreach ($subentities as $subentity) {
-
-                        $subentity->addRelationship($guid, 'softDeleted_with');
-                        $subentity->softDelete(true);
-                        get_entity($deleter_guid)->addRelationship($subentity->guid, 'deleted_by');
-                    }
-                }
-            });
-        }
-        get_entity($deleter_guid)->addRelationship($this->guid, 'deleted_by');
-
-        $this->disableAnnotations();
-
-        //TODO: Link to database team method to write to softDelete column
-        $softDeleted = _elgg_services()->entityTable->softDelete($this);
-
-        $time_soft_deleted = isset($this->attributes['time_soft_deleted']) ? (int) $this->attributes['time_soft_deleted'] : $now;
-
-        // Call updateTimeSoftDeleted function to update the time_soft_deleted attribute
-        $this->updateTimeSoftDeleted($time_soft_deleted);
+		$guid = (int) $this->guid;
 
 
-        if ($unban_after) {
-            $this->unban();
-        }
+		if ($recursive) {
+			elgg_call(ELGG_IGNORE_ACCESS | ELGG_HIDE_DISABLED_ENTITIES, function () use ($deleter_guid, $guid) {
+				$base_options = [
+					'wheres' => [
+						function(QueryBuilder $qb, $main_alias) use ($guid) {
+							return $qb->compare("{$main_alias}.guid", '!=', $guid, ELGG_VALUE_GUID);
+						},
+					],
+					'limit' => false,
+					'batch' => true,
+					'batch_inc_offset' => false,
+				];
 
-        if ($softDeleted) {
-            $this->invalidateCache();
+				foreach (['owner_guid', 'container_guid'] as $db_column) {
+					$options = $base_options;
+					$options[$db_column] = $guid;
 
-            $this->attributes['softDeleted'] = 'yes';
+					$subentities = elgg_get_entities($options);
+					/* @var $subentity \ElggEntity */
+					foreach ($subentities as $subentity) {
+						$subentity->addRelationship($guid, 'softDeleted_with');
+						$subentity->softDelete(true);
+						get_entity($deleter_guid)->addRelationship($subentity->guid, 'deleted_by');
+					}
+				}
+			});
+		}
 
-            _elgg_services()->events->triggerAfter('softDelete', $this->type, $this);
-        }
+		get_entity($deleter_guid)->addRelationship($this->guid, 'deleted_by');
 
-        return $softDeleted;
-    }
+		$this->disableAnnotations();
 
-    public function restore(int $deleter_guid, bool $recursive = true): bool {
-        if (empty($this->guid)) {
-            return false;
-        }
+		$softDeleted = _elgg_services()->entityTable->softDelete($this);
 
-        if (!_elgg_services()->events->trigger('restore', $this->type, $this)) {
-            return false;
-        }
+		$time_soft_deleted = isset($this->attributes['time_soft_deleted']) ? (int) $this->attributes['time_soft_deleted'] : $now;
 
-        if (!$this->canEdit()) {
-            return false;
-        }
+		$this->updateTimeSoftDeleted($time_soft_deleted);
 
-        $result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($deleter_guid, $recursive) {
-            //TODO: Link to database team method to write to softDelete column
-            $result = _elgg_services()->entityTable->restore($this);
 
-            $this->enableAnnotations();
+		if ($unban_after) {
+			$this->unban();
+		}
 
-            if ($recursive) {
-                $softDeleted_with_it = elgg_get_entities([
-                    'relationship' => 'softDeleted_with',
-                    'relationship_guid' => $this->guid,
-                    'inverse_relationship' => true,
-                    'limit' => false,
-                    'batch' => true,
-                    'batch_inc_offset' => false,
-                ]);
+		if ($softDeleted) {
+			$this->invalidateCache();
 
-                foreach ($softDeleted_with_it as $e) {
-                    $e->restore($recursive);
-                    $e->removeRelationship($this->guid, 'softDeleted_with');
-                    get_entity($deleter_guid)->removeRelationship($e->guid, 'deleted_by');
+			$this->attributes['softDeleted'] = 'yes';
 
-                }
-            }
+			_elgg_services()->events->triggerAfter('softDelete', $this->type, $this);
+		}
 
-            return $result;
-        });
-        get_entity($deleter_guid)->removeRelationship($this->guid, 'deleted_by');
+		return $softDeleted;
+	}
 
-        if ($result) {
-            $this->attributes['softDeleted'] = 'no';
-            //TODO: Find out what enable events do, how to adapt to restore
-            _elgg_services()->events->triggerAfter('restore', $this->type, $this);
-        }
+	/**
+	 * Restore the entity
+	 *
+	 * @param int  $deleter_guid GUID of the deleting user
+	 * @param bool $recursive    Recursively restores all entities soft deleted with the entity?
+	 * @see access_show_hiden_entities()
+	 * @return bool
+	 */
+	public function restore(int $deleter_guid, bool $recursive = true): bool {
+		if (empty($this->guid)) {
+			return false;
+		}
 
-        return $result;
-    }
+		if (!_elgg_services()->events->trigger('restore', $this->type, $this)) {
+			return false;
+		}
+
+		if (!$this->canEdit()) {
+			return false;
+		}
+
+		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($deleter_guid, $recursive) {
+
+			$result = _elgg_services()->entityTable->restore($this);
+
+			$this->enableAnnotations();
+
+			if ($recursive) {
+				$softDeleted_with_it = elgg_get_entities([
+					'relationship' => 'softDeleted_with',
+					'relationship_guid' => $this->guid,
+					'inverse_relationship' => true,
+					'limit' => false,
+					'batch' => true,
+					'batch_inc_offset' => false,
+				]);
+
+				foreach ($softDeleted_with_it as $e) {
+					$e->restore($recursive);
+					$e->removeRelationship($this->guid, 'softDeleted_with');
+					get_entity($deleter_guid)->removeRelationship($e->guid, 'deleted_by');
+				}
+			}
+
+			return $result;
+		});
+		get_entity($deleter_guid)->removeRelationship($this->guid, 'deleted_by');
+
+		if ($result) {
+			$this->attributes['softDeleted'] = 'no';
+			_elgg_services()->events->triggerAfter('restore', $this->type, $this);
+		}
+
+		return $result;
+	}
 
 	/**
 	 * Disable this entity.
@@ -1813,32 +1837,32 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		}
 	}
 
-    /**
-     * this method overrides an entity id with id of the group/user.
-     * @param $entity_guid
-     * @param $group_guid
-     * @return bool
-     */
-    public static function overrideEntityID($entity_guid, $group_guid) {
-        $entity = get_entity($entity_guid);
+	/**
+	 * this method overrides an entity id with id of the group/user.
+	 * @param int $entity_guid the GUID of the entity which will have its container overridden
+	 * @param int $group_guid  the GUID of the new container
+	 * @return bool
+	 */
+	public static function overrideEntityID(int $entity_guid, int $group_guid) {
+		$entity = get_entity($entity_guid);
 
-        if (!$entity) {
-            return false;
-        }
+		if (!$entity) {
+			return false;
+		}
 
-        $group = get_entity($group_guid);
+		$group = get_entity($group_guid);
 
-        if (!$group) {
-            return false;
-        }
+		if (!$group) {
+			return false;
+		}
 
-        $entity->container_guid = $group->guid;
+		$entity->container_guid = $group->guid;
 
 
-        $entity->save();
+		$entity->save();
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
 	 * Export an entity
@@ -2037,22 +2061,22 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		return $posted;
 	}
 
-    /**
-     * Update the time_soft_deleted column in the entities table.
-     *
-     *
-     * @param int $posted Timestamp of last action
-     * @return int
-     * @internal
-     */
-    public function updateTimeSoftDeleted(int $posted = null): int {
-        $posted = _elgg_services()->entityTable->updateTimeSoftDeleted($this, $posted);
+	/**
+	 * Update the time_soft_deleted column in the entities table.
+	 *
+	 *
+	 * @param int $posted Timestamp of last action
+	 * @return int
+	 * @internal
+	 */
+	public function updateTimeSoftDeleted(int $posted = null): int {
+		$posted = _elgg_services()->entityTable->updateTimeSoftDeleted($this, $posted);
 
-        $this->attributes['time_soft_deleted'] = $posted;
-        $this->cache();
+		$this->attributes['time_soft_deleted'] = $posted;
+		$this->cache();
 
-        return $posted;
-    }
+		return $posted;
+	}
 
 	/**
 	 * Disable runtime caching for entity

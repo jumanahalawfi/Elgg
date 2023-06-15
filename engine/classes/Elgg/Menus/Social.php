@@ -29,9 +29,9 @@ class Social {
 			return;
 		}
 
-        if ($entity->soft_deleted === 'yes'){
-            return;
-        }
+		if ($entity->soft_deleted === 'yes') {
+			return;
+		}
 		
 		/* @var $return MenuItems */
 		$return = $event->getValue();

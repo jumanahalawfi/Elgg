@@ -25,9 +25,9 @@ return [
 	'actions' => [
 		'blog/save' => [],
 	],
-    'view_options' => [
-        'forms/blog/postrestore' => ['ajax' => true],
-    ],
+	'view_options' => [
+		'forms/blog/postrestore' => ['ajax' => true],
+	],
 	'routes' => [
 		'collection:object:blog:owner' => [
 			'path' => '/blog/owner/{username}/{lower?}/{upper?}',
