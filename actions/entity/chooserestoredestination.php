@@ -43,13 +43,11 @@ $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 if ($entity->soft_deleted === 'yes') {
     // restore-and-move: move the entity to new container. Currently NOT fail-safe against fail restore.
-    $entity->setContainerGUID($destination_container_guid);
 
     if (!$entity->restore($deleter_guid)) {
         return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
     }
-
-    //get_entity($deleter_guid)->removeRelationship($this->guid, 'deleted_by');
+    $entity->overrideEntityContainerID($entity->guid, $entity->type, $entity->subtype, $destination_container_guid);
 
 }
 
@@ -124,6 +122,6 @@ if (get_input('show_success', true)) {
     }
 }
 
-$message = 'New container is' . $entity->getContainerGUID(); // test
+$message = 'New container is: ' . $entity->getDisplayName(); // test
 
 return elgg_ok_response('', $message, $forward_url);

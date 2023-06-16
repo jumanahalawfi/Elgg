@@ -1556,8 +1556,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 					/* @var $subentity \ElggEntity */
 					foreach ($subentities as $subentity) {
 						$subentity->addRelationship($guid, 'softDeleted_with');
-						$subentity->softDelete(true);
-						get_entity($deleter_guid)->addRelationship($subentity->guid, 'deleted_by');
+                        get_entity($deleter_guid)->addRelationship($subentity->guid, 'deleted_by');
+						$subentity->softDelete($deleter_guid, true);
 					}
 				}
 			});
@@ -1610,7 +1610,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			return false;
 		}
 
-		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($deleter_guid, $recursive) {
+		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES | ELGG_SHOW_SOFT_DELETED_ENTITIES, function() use ($deleter_guid, $recursive) {
 
 			$result = _elgg_services()->entityTable->restore($this);
 
@@ -1627,7 +1627,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 				]);
 
 				foreach ($softDeleted_with_it as $e) {
-					$e->restore($recursive);
+					$e->restore($deleter_guid, $recursive);
 					$e->removeRelationship($this->guid, 'softDeleted_with');
 					get_entity($deleter_guid)->removeRelationship($e->guid, 'deleted_by');
 				}
@@ -1852,7 +1852,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			return false;
 		}
 
-        if(!$group->canWriteToContainer($type, $subtype)){
+        if(!$group->canWriteToContainer(elgg_get_logged_in_user_guid(),$type, $subtype)){
             return false;
         }
 
