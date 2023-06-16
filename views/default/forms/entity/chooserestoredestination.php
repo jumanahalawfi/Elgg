@@ -12,8 +12,6 @@ $entity_guid = (int) get_input('entity_guid');
 $deleter_guid = (int) get_input('deleter_guid');
 $entity_owner_guid = (int) get_input('entity_owner_guid');
 
-$destination_container_guid = $entity_owner_guid; // failsafe - defaults to owner
-
 $soft_deleted_groups = elgg_get_entities([
     'type' => 'group',
     'relationship' => 'member',
@@ -42,7 +40,7 @@ $fields = [
         '#type' => 'select',
         '#label' => elgg_echo('Destination group'), // TODO: Translate?
         'required' => true,
-        'name' => 'destination_container_id',
+        'name' => 'destination_container_guid',
         'options_values' => $destination_container_names,
     ],
     [
