@@ -102,6 +102,8 @@ class Entity {
                         'address' => $entity->getURL(),
                         'title' => $entity->getDisplayName(),
                         'entity_guid' => $entity->guid,
+                        'deleter_guid' => elgg_get_logged_in_user_guid(),
+                        'entity_owner_guid' => $entity->owner_guid,
                     ]),
                     //'confirm' => elgg_echo('restoreandmoveconfirm'),
                     'link_class' => 'elgg-lightbox', // !!

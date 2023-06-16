@@ -1,8 +1,7 @@
 <?php
 
 /**
- * Body of the form for choosing restore destination (currently, of a post).
- * For now just stubs from reportedcontent/add.
+ * Body of the form for choosing restore destination.
  */
 
 elgg_gatekeeper();
@@ -10,24 +9,10 @@ elgg_gatekeeper();
 $title = get_input('title', '');
 $address = get_input('address', '');
 $entity_guid = (int) get_input('entity_guid');
+$deleter_guid = (int) get_input('deleter_guid');
+$entity_owner_guild = (int) get_input('entity_owner_guid');
 
-$description = '';
-
-// Fetching temporary bin entities for testing, TODO: replace this with active-only groups
-$list_params = [
-    'type' => 'group',
-    'query' => 'no',
-    'fields' => [
-        'entities' => ['soft_deleted'],
-    ],
-    //'relationship' => 'deleted_by', // TODO: Decide view rights for the user performing restore-and-move operation
-    //'type_subtype_pairs' => elgg_entity_types_with_capability('soft_deletable'),
-    //'inverse_relationship' => false,
-    'no_results' => true
-];
-
-//$soft_deleted_groups = elgg_search($list_params);
-
+$destination_container_guid = $entity_owner_guild; // failsafe - defaults to owner
 
 $soft_deleted_groups = elgg_get_entities([
     'type' => 'group',
@@ -40,22 +25,12 @@ $soft_deleted_groups = elgg_get_entities([
     ],
     'no_results' => elgg_echo('groups:none'),
 ]);
+
+// see: input/select.php
 $group_names = [];
-
-
 foreach ($soft_deleted_groups as $group) {
-$group_names[] = $group->guid; // test, should be group name. TODO: fetch group names
+    $group_names += array($group->guid => $group->getDisplayName());
 }
-
-
-/**
-$active_groups = elgg_get_entities([
-    'type' => 'group',
-    //'soft_deleted' => 'no',
-    'full_view' => false,
-    'no_results' => elgg_echo('groups:none'),
-]);
- **/
 
 $fields = [
     [
@@ -64,8 +39,22 @@ $fields = [
         'required' => true,
         'name' => 'status',
         'options_values' => $group_names,
-    ]
-
+    ],
+    [
+    '#type' => 'hidden',
+    'name' => 'entity_guid',
+    'value' => $entity_guid,
+    ],
+    [
+        '#type' => 'hidden',
+        'name' => 'destination_container_guid',
+        'value' => $destination_container_guid,
+    ],
+    [
+        '#type' => 'hidden',
+        'name' => 'deleter_guid',
+        'value' => $deleter_guid,
+    ],
 ];
 
 foreach ($fields as $field) {
