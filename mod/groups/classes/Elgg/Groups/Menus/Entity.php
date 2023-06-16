@@ -56,9 +56,9 @@ class Entity {
 			return;
 		}
 
-        if($entity->soft_deleted === 'yes'){
-            return;
-        }
+		if ($entity->soft_deleted === 'yes') {
+			return;
+		}
 
 		if (!elgg_is_admin_logged_in()) {
 			return;

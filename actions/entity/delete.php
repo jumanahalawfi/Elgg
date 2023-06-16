@@ -5,8 +5,9 @@
 
 $guid = (int) get_input('guid');
 $deleter_guid = (int) get_input('deleter_guid');
-
-$entity = get_entity($guid);
+$entity = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($guid){
+	return get_entity($guid);
+});
 if (!$entity instanceof \ElggEntity) {
 	return elgg_error_response(elgg_echo('entity:delete:item_not_found'));
 }
@@ -26,18 +27,15 @@ $container = $entity->getContainerEntity();
 
 $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
-//TODO: discuss: above call returns nothing, but searching for 'commentable' does - why?
 
-if ($entity->soft_deleted === 'no') {
-    if (!$entity->softDelete()) {
-        return elgg_error_response(elgg_echo('entity:delete:fail', [$display_name]));
-    }
-    get_entity($deleter_guid)->addRelationship($entity->guid, 'deleted_by');
+if ($entity->soft_deleted === 'no' && $entity->hasCapability('soft_deletable')) {
+	if (!$entity->softDelete($deleter_guid)) {
+		return elgg_error_response(elgg_echo('entity:delete:fail', [$display_name]));
+	}
 } else {
-    if (!$entity->delete()) {
-        return elgg_error_response(elgg_echo('entity:delete:fail', [$display_name]));
-    }
-    get_entity($deleter_guid)->removeRelationship($entity->guid, 'deleted_by');
+	if (!$entity->delete()) {
+		return elgg_error_response(elgg_echo('entity:delete:fail', [$display_name]));
+	}
 }
 
 // determine forward URL

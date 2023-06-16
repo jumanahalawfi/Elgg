@@ -60,9 +60,9 @@ class Entity {
 			return;
 		}
 
-        if ($entity->soft_deleted === 'yes'){
-            return;
-        }
+		if ($entity->soft_deleted === 'yes') {
+			return;
+		}
 		
 		$report_this = (bool) $event->getParam('report_this', $entity->hasCapability('searchable'));
 		if (!$report_this) {
