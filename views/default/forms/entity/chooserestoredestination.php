@@ -7,39 +7,65 @@
 
 elgg_gatekeeper();
 
-$title = '';
-$address = '';
-$guid = (int) get_input('guid');
+$title = get_input('title', '');
+$address = get_input('address', '');
+$entity_guid = (int) get_input('entity_guid');
 
 $description = '';
 
+// Fetching temporary bin entities for testing, TODO: replace this with active-only groups
+$list_params = [
+    'type' => 'group',
+    'query' => 'no',
+    'fields' => [
+        'entities' => ['soft_deleted'],
+    ],
+    //'relationship' => 'deleted_by', // TODO: Decide view rights for the user performing restore-and-move operation
+    //'type_subtype_pairs' => elgg_entity_types_with_capability('soft_deletable'),
+    //'inverse_relationship' => false,
+    'no_results' => true
+];
+
+//$soft_deleted_groups = elgg_search($list_params);
+
+
+$soft_deleted_groups = elgg_get_entities([
+    'type' => 'group',
+    'relationship' => 'member',
+    'relationship_guid' => elgg_get_logged_in_user_guid(),
+    'inverse_relationship' => false,
+    'sort_by' => [
+        'property' => 'name',
+        'direction' => 'ASC',
+    ],
+    'no_results' => elgg_echo('groups:none'),
+]);
+$group_names = [];
+
+
+foreach ($soft_deleted_groups as $group) {
+$group_names[] = $group->guid; // test, should be group name. TODO: fetch group names
+}
+
+
+/**
+$active_groups = elgg_get_entities([
+    'type' => 'group',
+    //'soft_deleted' => 'no',
+    'full_view' => false,
+    'no_results' => elgg_echo('groups:none'),
+]);
+ **/
+
 $fields = [
     [
-        '#type' => 'text',
-        '#label' => 'titleLabel',
-        'name' => 'title',
-        'value' => $title,
+        '#type' => 'select',
+        '#label' => elgg_echo('Destination group'), // TODO: Translate?
         'required' => true,
-    ],
-    [
-        '#type' => 'url',
-        '#label' => 'addressLabel',
-        'name' => 'address',
-        'value' => $address,
-        'readonly' => (bool) $address,
-        'required' => true,
-    ],
-    [
-        '#type' => 'plaintext',
-        '#label' => 'descriptionLabel',
-        'name' => 'description',
-        'value' => $description,
-    ],
-    [
-        '#type' => 'hidden',
-        'name' => 'entity_guid',
-        'value' => $guid,
-    ],
+        'name' => 'status',
+        'options_values' => $group_names,
+    ]
+
 ];
 
 foreach ($fields as $field) {
@@ -47,12 +73,14 @@ foreach ($fields as $field) {
 }
 
 
+// TODO: elgg_echo is currently hardcoded and not translated
 $footer = elgg_view('input/submit', [
-    'value' => 'send',
+    'value' => elgg_echo('Confirm'),
 ]);
 $footer .= elgg_view('input/button', [
     'class' => 'elgg-button-cancel',
-    'value' => 'cancel',
+    'value' => elgg_echo('Cancel'),
 ]);
 
 elgg_set_form_footer($footer);
+

@@ -10,6 +10,10 @@
 
 // TODO: Inside the action, only sets the relationship changes (see reportedcontent for example). The below code is bullshit for now.
 
+/**
+ * ACTIONS WILL RECEIVE THE VARIABLES FORWARDED BY FORM
+ */
+
 // Does not do anything yet, only redirects
 $site_url = elgg_get_site_url();
 $forward_url = $site_url . 'bin';
@@ -23,7 +27,6 @@ elgg_register_ajax_view('forms/entity/chooserestoredestination');
 
 **/
 
-echo elgg_view_form('chooserestoredestination', ['ajax' => true],
-    ['guid' => $guid]);
+
 
 //return elgg_ok_response('', $message, $forward_url);
