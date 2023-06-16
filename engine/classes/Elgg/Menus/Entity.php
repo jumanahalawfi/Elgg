@@ -98,10 +98,15 @@ class Entity {
 					'icon' => 'arrow-up',
 					'text' => elgg_echo('restore and move'),
 					'title' => elgg_echo('restore:this'),
-					'href' => $restore_urlaction,
-					'confirm' => elgg_echo('restoreandmoveconfirm'),
-					'priority' => 900,
-				]);
+                    'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
+                        'address' => $entity->getURL(),
+                        'title' => $entity->getDisplayName(),
+                        'entity_guid' => $entity->guid,
+                    ]),
+                    //'confirm' => elgg_echo('restoreandmoveconfirm'),
+                    'link_class' => 'elgg-lightbox', // !!
+                    'priority' => 900,
+                ]);
 			} else {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'restore',
