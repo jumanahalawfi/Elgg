@@ -10,9 +10,9 @@ $title = get_input('title', '');
 $address = get_input('address', '');
 $entity_guid = (int) get_input('entity_guid');
 $deleter_guid = (int) get_input('deleter_guid');
-$entity_owner_guild = (int) get_input('entity_owner_guid');
+$entity_owner_guid = (int) get_input('entity_owner_guid');
 
-$destination_container_guid = $entity_owner_guild; // failsafe - defaults to owner
+$destination_container_guid = $entity_owner_guid; // failsafe - defaults to owner
 
 $soft_deleted_groups = elgg_get_entities([
     'type' => 'group',
@@ -27,9 +27,14 @@ $soft_deleted_groups = elgg_get_entities([
 ]);
 
 // see: input/select.php
-$group_names = [];
-foreach ($soft_deleted_groups as $group) {
-    $group_names += array($group->guid => $group->getDisplayName());
+$destination_container_names = [];
+
+if (empty($soft_deleted_groups)) {
+    $destination_container_names = [$entity_owner_guid => 'No group to move to, assigning back to owner'];
+} else {
+    foreach ($soft_deleted_groups as $group) {
+        $destination_container_names += array($group->guid => $group->getDisplayName());
+    }
 }
 
 $fields = [
@@ -37,18 +42,13 @@ $fields = [
         '#type' => 'select',
         '#label' => elgg_echo('Destination group'), // TODO: Translate?
         'required' => true,
-        'name' => 'status',
-        'options_values' => $group_names,
+        'name' => 'destination_container_id',
+        'options_values' => $destination_container_names,
     ],
     [
     '#type' => 'hidden',
     'name' => 'entity_guid',
     'value' => $entity_guid,
-    ],
-    [
-        '#type' => 'hidden',
-        'name' => 'destination_container_guid',
-        'value' => $destination_container_guid,
     ],
     [
         '#type' => 'hidden',

@@ -11,15 +11,17 @@
 // TODO: Inside the action, only sets the relationship changes (see reportedcontent for example). The below code is bullshit for now.
 
 /**
- * ACTIONS WILL RECEIVE THE VARIABLES FORWARDED BY FORM
+ * ACTIONS WILL RECEIVE THE VARIABLES FORWARDED BY FORM, USING THE 'name' OF THE FIELD
  */
 
 // Does not do anything yet, only redirects
-$site_url = elgg_get_site_url();
-$forward_url = $site_url . 'bin';
-$message = 'Test redirecting worked, go to temporary bin';
+$destination_container_id = (int) get_input('destination_container_id');
 
-$guid = (int) get_input('guid');
+$site_url = elgg_get_site_url();
+$forward_url = '';
+$message = 'Test redirecting worked, destination container is: ' . $destination_container_id;
+
+// $guid = (int) get_input('guid');
 
 /**
 // Spits out the form to choose groups
@@ -29,4 +31,4 @@ elgg_register_ajax_view('forms/entity/chooserestoredestination');
 
 
 
-//return elgg_ok_response('', $message, $forward_url);
+return elgg_ok_response('', $message, REFERRER);
