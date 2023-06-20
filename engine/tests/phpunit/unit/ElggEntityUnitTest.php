@@ -64,6 +64,7 @@ class ElggEntityUnitTest extends \Elgg\UnitTestCase {
 		return [
 			['subtype'],
 			['enabled'],
+            ['soft_deleted'],
 		];
 	}
 	
