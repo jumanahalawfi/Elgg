@@ -92,7 +92,7 @@ class Entity {
 
 		if ($entity->soft_deleted === 'yes') {
 			$container = get_entity($entity->container_guid);
-			if ($container->soft_deleted === 'yes' && !($container instanceof \ElggUser)) {
+			if (!($container instanceof \ElggUser)) {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'restore and move',
 					'icon' => 'arrow-up',
@@ -109,17 +109,20 @@ class Entity {
                     'link_class' => 'elgg-lightbox', // !!
                     'priority' => 900,
                 ]);
-			} else {
-				$return[] = \ElggMenuItem::factory([
-					'name' => 'restore',
-					'icon' => 'settings',
-					'text' => elgg_echo('restore'),
-					'title' => elgg_echo('restore:this'),
-					'href' => $restore_url,
-					'confirm' => elgg_echo('restoreconfirm'),
-					'priority' => 900,
-				]);
 			}
+            if (!($container->soft_deleted === 'yes')){
+                $return[] = \ElggMenuItem::factory([
+                    'name' => 'restore',
+                    'icon' => 'settings',
+                    'text' => elgg_echo('restore'),
+                    'title' => elgg_echo('restore:this'),
+                    'href' => $restore_url,
+                    'confirm' => elgg_echo('restoreconfirm'),
+                    'priority' => 900,
+                ]);
+            }
+
+
 		}
 
 		$return[] = \ElggMenuItem::factory([
