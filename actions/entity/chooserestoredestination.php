@@ -122,6 +122,4 @@ if (get_input('show_success', true)) {
     }
 }
 
-$message = 'New container is: ' . $entity->getDisplayName(); // test
-
 return elgg_ok_response('', $message, $forward_url);

@@ -27,12 +27,9 @@ $soft_deleted_groups = elgg_get_entities([
 // see: input/select.php
 $destination_container_names = [];
 
-if (empty($soft_deleted_groups)) {
-    $destination_container_names = [$entity_owner_guid => 'No group to move to, assigning back to owner'];
-} else {
-    foreach ($soft_deleted_groups as $group) {
-        $destination_container_names += array($group->guid => $group->getDisplayName());
-    }
+$destination_container_names = [$entity_owner_guid => 'assign back to original user'];
+foreach ($soft_deleted_groups as $group) {
+    $destination_container_names += array($group->guid => $group->getDisplayName());
 }
 
 $fields = [
