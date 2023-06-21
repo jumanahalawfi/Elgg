@@ -83,6 +83,8 @@ class AnnotationsTable extends DbAnnotations {
 			'value_type' => $annotation->value_type,
 			'time_created' => $this->getCurrentTime()->getTimestamp(),
 			'enabled' => $annotation->enabled,
+            'soft_deleted' => $annotation->soft_deleted,
+            'time_soft_deleted' => $annotation->time_soft_deleted
 		];
 		
 		$this->rows[$id] = $row;

@@ -51,6 +51,8 @@ class EntityTable extends DbEntityTable {
 				'time_updated' => time(),
 				'last_action' => time(),
 				'enabled' => 'yes',
+                'soft_deleted' => 'no',
+                'time_soft_deleted' => 0
 			];
 		}
 
@@ -152,6 +154,8 @@ class EntityTable extends DbEntityTable {
 			'time_updated' => $time,
 			'last_action' => $time,
 			'enabled' => 'yes',
+            'soft_deleted' => 'no',
+            'time_soft_deleted' => 0
 		];
 
 		$map = array_merge($primary_attributes, $attributes);
@@ -362,7 +366,7 @@ class EntityTable extends DbEntityTable {
 		}
 
 		$access_array = _elgg_services()->accessCollections->getAccessArray($user->guid);
-		return in_array($row->access_id, $access_array);;
+		return in_array($row->access_id, $access_array);
 	}
 
 	/**
