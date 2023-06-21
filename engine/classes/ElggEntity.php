@@ -1597,7 +1597,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 * @see access_show_hiden_entities()
 	 * @return bool
 	 */
-	public function restore(int $deleter_guid, bool $recursive = true): bool {
+	public function restore(bool $recursive = true): bool {
 		if (empty($this->guid)) {
 			return false;
 		}
@@ -1610,7 +1610,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			return false;
 		}
 
-		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES | ELGG_SHOW_SOFT_DELETED_ENTITIES, function() use ($deleter_guid, $recursive) {
+		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES | ELGG_SHOW_SOFT_DELETED_ENTITIES, function() use ($recursive) {
 
 			$result = _elgg_services()->entityTable->restore($this);
 
@@ -1627,15 +1627,15 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 				]);
 
 				foreach ($softDeleted_with_it as $e) {
-					$e->restore($deleter_guid, $recursive);
+					$e->restore($recursive);
 					$e->removeRelationship($this->guid, 'softDeleted_with');
-					get_entity($deleter_guid)->removeRelationship($e->guid, 'deleted_by');
+                    $e->removeAllRelationships('deleted_by', true);
 				}
 			}
 
 			return $result;
 		});
-		get_entity($deleter_guid)->removeRelationship($this->guid, 'deleted_by');
+		$this->removeAllRelationships('deleted_by', true);
 
 		if ($result) {
 			$this->attributes['softDeleted'] = 'no';
