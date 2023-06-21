@@ -98,31 +98,30 @@ class Entity {
 					'icon' => 'arrow-up',
 					'text' => elgg_echo('restore and move'),
 					'title' => elgg_echo('restore:this'),
-                    'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
-                        'address' => $entity->getURL(),
-                        'title' => $entity->getDisplayName(),
-                        'entity_guid' => $entity->guid,
-                        'deleter_guid' => elgg_get_logged_in_user_guid(),
-                        'entity_owner_guid' => $entity->owner_guid,
-                    ]),
-                    //'confirm' => elgg_echo('restoreandmoveconfirm'),
-                    'link_class' => 'elgg-lightbox', // !!
-                    'priority' => 900,
-                ]);
+					'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
+						'address' => $entity->getURL(),
+						'title' => $entity->getDisplayName(),
+						'entity_guid' => $entity->guid,
+						'deleter_guid' => elgg_get_logged_in_user_guid(),
+						'entity_owner_guid' => $entity->owner_guid,
+					]),
+					//'confirm' => elgg_echo('restoreandmoveconfirm'),
+					'link_class' => 'elgg-lightbox', // !!
+					'priority' => 900,
+				]);
 			}
-            if (!($container->soft_deleted === 'yes')){
-                $return[] = \ElggMenuItem::factory([
-                    'name' => 'restore',
-                    'icon' => 'settings',
-                    'text' => elgg_echo('restore'),
-                    'title' => elgg_echo('restore:this'),
-                    'href' => $restore_url,
-                    'confirm' => elgg_echo('restoreconfirm'),
-                    'priority' => 900,
-                ]);
-            }
 
-
+			if (!($container->soft_deleted === 'yes')) {
+				$return[] = \ElggMenuItem::factory([
+					'name' => 'restore',
+					'icon' => 'settings',
+					'text' => elgg_echo('restore'),
+					'title' => elgg_echo('restore:this'),
+					'href' => $restore_url,
+					'confirm' => elgg_echo('restoreconfirm'),
+					'priority' => 900,
+				]);
+			}
 		}
 
 		$return[] = \ElggMenuItem::factory([
