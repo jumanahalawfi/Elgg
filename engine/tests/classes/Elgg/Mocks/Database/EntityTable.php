@@ -412,6 +412,8 @@ class EntityTable extends DbEntityTable {
 			->set('access_id', $update->param($row->access_id, ELGG_VALUE_ID))
 			->set('time_created', $update->param($row->time_created, ELGG_VALUE_TIMESTAMP))
 			->set('time_updated', $update->param($row->time_updated, ELGG_VALUE_TIMESTAMP))
+            ->set('soft_deleted', $update->param($row->soft_deleted, ELGG_VALUE_STRING))
+            ->set('time_soft_deleted', $update->param($row->time_soft_deleted, ELGG_VALUE_STRING))
 			->where($update->compare('guid', '=', $row->guid, ELGG_VALUE_GUID));
 		
 		$this->query_specs[$row->guid][] = $this->db->addQuerySpec([
@@ -450,6 +452,28 @@ class EntityTable extends DbEntityTable {
 			'times' => 1,
 		]);
 
+        // soft delete
+        $qb = Update::table(self::TABLE_NAME);
+        $qb->set('soft_deleted', $qb->param('yes', ELGG_VALUE_STRING))
+            ->where($qb->compare('guid', '=', $row->guid, ELGG_VALUE_GUID));
+
+        $this->query_specs[$row->guid][] = $this->db->addQuerySpec([
+            'sql' => $qb->getSQL(),
+            'params' => $qb->getParameters(),
+            'results' => function () use ($row) {
+                if (isset($this->rows[$row->guid])) {
+                    $row->soft_deleted = 'yes';
+                    $this->rows[$row->guid] = $row;
+                    $this->addQuerySpecs($row);
+
+                    return [$row->guid];
+                }
+
+                return [];
+            },
+            'times' => 1,
+        ]);
+
 		// Enable
 		$qb = Update::table(self::TABLE_NAME);
 		$qb->set('enabled', $qb->param('yes', ELGG_VALUE_STRING))
@@ -471,6 +495,28 @@ class EntityTable extends DbEntityTable {
 			},
 			'times' => 1,
 		]);
+
+        // restore
+        $qb = Update::table(self::TABLE_NAME);
+        $qb->set('soft_deleted', $qb->param('no', ELGG_VALUE_STRING))
+            ->where($qb->compare('guid', '=', $row->guid, ELGG_VALUE_GUID));
+
+        $this->query_specs[$row->guid][] = $this->db->addQuerySpec([
+            'sql' => $qb->getSQL(),
+            'params' => $qb->getParameters(),
+            'results' => function () use ($row) {
+                if (isset($this->rows[$row->guid])) {
+                    $row->soft_deleted = 'no';
+                    $this->rows[$row->guid] = $row;
+                    $this->addQuerySpecs($row);
+
+                    return [$row->guid];
+                }
+
+                return [];
+            },
+            'times' => 1,
+        ]);
 
 		// Update last action
 		$time = $this->getCurrentTime()->getTimestamp();
