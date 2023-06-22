@@ -26,7 +26,7 @@ $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 
 if ($entity->soft_deleted === 'yes') {
-	if (!$entity->restore($deleter_guid)) {
+	if (!$entity->restore()) {
 		return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
 	}
 }

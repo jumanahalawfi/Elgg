@@ -92,24 +92,26 @@ class Entity {
 
 		if ($entity->soft_deleted === 'yes') {
 			$container = get_entity($entity->container_guid);
-			if ($container->soft_deleted === 'yes' && !($container instanceof \ElggUser)) {
+			if (!($container instanceof \ElggUser)) {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'restore and move',
 					'icon' => 'arrow-up',
 					'text' => elgg_echo('restore and move'),
 					'title' => elgg_echo('restore:this'),
-                    'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
-                        'address' => $entity->getURL(),
-                        'title' => $entity->getDisplayName(),
-                        'entity_guid' => $entity->guid,
-                        'deleter_guid' => elgg_get_logged_in_user_guid(),
-                        'entity_owner_guid' => $entity->owner_guid,
-                    ]),
-                    //'confirm' => elgg_echo('restoreandmoveconfirm'),
-                    'link_class' => 'elgg-lightbox', // !!
-                    'priority' => 900,
-                ]);
-			} else {
+					'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
+						'address' => $entity->getURL(),
+						'title' => $entity->getDisplayName(),
+						'entity_guid' => $entity->guid,
+						'deleter_guid' => elgg_get_logged_in_user_guid(),
+						'entity_owner_guid' => $entity->owner_guid,
+					]),
+					//'confirm' => elgg_echo('restoreandmoveconfirm'),
+					'link_class' => 'elgg-lightbox', // !!
+					'priority' => 900,
+				]);
+			}
+
+			if (!($container->soft_deleted === 'yes')) {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'restore',
 					'icon' => 'settings',

@@ -56,7 +56,7 @@ class SystemEventHandlers {
 		elgg_register_ajax_view('page/elements/comments');
 		elgg_register_ajax_view('river/elements/responses');
 
-        elgg_register_ajax_view('forms/entity/chooserestoredestination'); // should it be placed here? Lets make it work first anyway...
+		elgg_register_ajax_view('forms/entity/chooserestoredestination'); // should it be placed here? Lets make it work first anyway...
 
 		elgg_extend_view('admin.css', 'lightbox/elgg-colorbox-theme/colorbox.css');
 		elgg_extend_view('core/settings/statistics', 'core/settings/statistics/online');

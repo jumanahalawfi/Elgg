@@ -8,7 +8,7 @@ $list_params = [
 ];
 
 if (!elgg_is_admin_logged_in()) {
-	$list_params['relationship_guid'] = elgg_get_logged_in_user_guid();
+	$list_params['owner_guid'] = elgg_get_logged_in_user_guid();
 }
 
 $content = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($list_params){

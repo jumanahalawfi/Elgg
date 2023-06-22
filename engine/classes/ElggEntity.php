@@ -163,6 +163,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$this->attributes['time_updated'] = null;
 		$this->attributes['last_action'] = null;
 		$this->attributes['enabled'] = 'yes';
+		$this->attributes['soft_deleted'] = 'no';
+		$this->attributes['time_soft_deleted'] = 0;
 	}
 
 	/**
@@ -1556,7 +1558,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 					/* @var $subentity \ElggEntity */
 					foreach ($subentities as $subentity) {
 						$subentity->addRelationship($guid, 'softDeleted_with');
-                        get_entity($deleter_guid)->addRelationship($subentity->guid, 'deleted_by');
+						get_entity($deleter_guid)->addRelationship($subentity->guid, 'deleted_by');
 						$subentity->softDelete($deleter_guid, true);
 					}
 				}
@@ -1597,7 +1599,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 * @see access_show_hiden_entities()
 	 * @return bool
 	 */
-	public function restore(int $deleter_guid, bool $recursive = true): bool {
+	public function restore(bool $recursive = true): bool {
 		if (empty($this->guid)) {
 			return false;
 		}
@@ -1610,7 +1612,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			return false;
 		}
 
-		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES | ELGG_SHOW_SOFT_DELETED_ENTITIES, function() use ($deleter_guid, $recursive) {
+		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES | ELGG_SHOW_SOFT_DELETED_ENTITIES, function() use ($recursive) {
 
 			$result = _elgg_services()->entityTable->restore($this);
 
@@ -1627,15 +1629,15 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 				]);
 
 				foreach ($softDeleted_with_it as $e) {
-					$e->restore($deleter_guid, $recursive);
+					$e->restore($recursive);
 					$e->removeRelationship($this->guid, 'softDeleted_with');
-					get_entity($deleter_guid)->removeRelationship($e->guid, 'deleted_by');
+					$e->removeAllRelationships('deleted_by', true);
 				}
 			}
 
 			return $result;
 		});
-		get_entity($deleter_guid)->removeRelationship($this->guid, 'deleted_by');
+		$this->removeAllRelationships('deleted_by', true);
 
 		if ($result) {
 			$this->attributes['softDeleted'] = 'no';
@@ -1845,10 +1847,12 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	/**
 	 * this method overrides an entity id with id of the group/user.
 	 * @param int $entity_guid the GUID of the entity which will have its container overridden
+	 * @param string $type  the type of the entity which will have its container overridden
+	 * @param string $subtype  the subtype of the entity which will have its container overridden
 	 * @param int $group_guid  the GUID of the new container
 	 * @return bool
 	 */
-	public static function overrideEntityContainerID(int $entity_guid, String $type, String $subtype, int $group_guid) {
+	public static function overrideEntityContainerID(int $entity_guid, string $type, string $subtype, int $group_guid) {
 		$entity = get_entity($entity_guid);
 
 		if (!$entity) {
@@ -1861,11 +1865,11 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			return false;
 		}
 
-        if(!$group->canWriteToContainer(elgg_get_logged_in_user_guid(),$type, $subtype)){
-            return false;
-        }
+		if (!$group->canWriteToContainer(elgg_get_logged_in_user_guid(), $type, $subtype)) {
+			return false;
+		}
 
-        //check if $group allows $entity type. If not return false.
+		//check if $group allows $entity type. If not return false.
 
 		$entity->container_guid = $group->guid;
 
