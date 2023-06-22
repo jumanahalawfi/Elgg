@@ -77,11 +77,6 @@ class Entity {
 			'deleter_guid' => elgg_get_logged_in_user_guid(),
 			'guid' => $entity->guid,
 		]);
-
-		$restore_urlaction = elgg_generate_url('move:bin', [
-			'deleter_guid' => elgg_get_logged_in_user_guid(),
-			'guid' => $entity->guid,
-		]);
 		
 		if (empty($delete_url) || !$entity->canDelete()) {
 			return;
