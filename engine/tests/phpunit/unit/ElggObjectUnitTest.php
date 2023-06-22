@@ -64,6 +64,7 @@ class ElggObjectUnitTest extends \Elgg\UnitTestCase {
 		$object->access_id = ACCESS_LOGGED_IN;
 		$object->time_created = time();
 
+
 		$object->setCurrentTime(); // We should be able to match timestamps
 		
 		$this->assertTrue($object->save());
