@@ -35,7 +35,7 @@ class ElggEntityUnitTest extends \Elgg\UnitTestCase {
 		$this->assertEquals(null, $this->obj->time_updated);
 		$this->assertEquals(null, $this->obj->last_action);
 		$this->assertEquals('yes', $this->obj->enabled);
-        $this->assertEquals('yes', $this->obj->soft_deleted);
+        $this->assertEquals('no', $this->obj->soft_deleted);
 
     }
 
@@ -180,8 +180,8 @@ class ElggEntityUnitTest extends \Elgg\UnitTestCase {
 		$this->assertTrue($this->obj->isEnabled());
 	}
 
-    public function testIsSoftDeleted() {
-        $this->assertTrue($this->obj->isSoftDeleted());
+    public function testIsNotSoftDeleted() {
+        $this->assertTrue($this->obj->isNotSoftDeleted());
     }
 
 	public function testDisableBeforeSaved() {
