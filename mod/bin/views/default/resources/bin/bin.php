@@ -1,4 +1,5 @@
 <?php
+elgg_require_js('resources/bin/bin');
 
 $list_params = [
     'relationship' => 'deleted_by',
@@ -15,25 +16,19 @@ $content = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($list_par
     return elgg_list_entities($list_params);
 });
 
-// check-box
-$toggle_button = elgg_view('input/checkbox', [
-    'name' => 'recursive-toggle',
-    'id' => 'recursive-toggle',
+$checkbox = elgg_view('input/checkbox', [
+    'name' => 'restore-checkbox',
+    'id' => 'restore-checkbox',
+    'value' => 1,
     'checked' => false,
+    'label' => elgg_echo('Restore Recursively'),
 ]);
-
-$toggle_label = elgg_format_element('label', [
-    'for' => 'recursive-toggle',
-    'class' => 'elgg-toggle-label',
-], elgg_echo('Restore recursively'));
-
-$toggle_div = elgg_format_element('div', ['class' => 'elgg-toggle elgg-bin-toggle'], $toggle_button . $toggle_label);
 
 echo elgg_view_page(
     elgg_echo('collection:object:bin'),
     elgg_view_layout('admin', [
         'title' => elgg_echo('collection:object:bin'),
-        'content' => elgg_format_element('div', ['class' => 'elgg-bin-toggle'], $toggle_div) . $content,
+        'content' => $checkbox . $content,
         'filter_id' => 'admin',
     ])
 );
