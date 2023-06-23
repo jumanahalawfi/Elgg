@@ -25,10 +25,11 @@ $container = $entity->getContainerEntity();
 $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 
-$checkboxBooleanValue = get_input( 'restore-recursively', FILTER_VALIDATE_BOOLEAN);
+$restoreCheckboxValue = elgg_extract('restore-checkbox', $_POST, false);
+$restoreFlag = filter_var($restoreCheckboxValue, FILTER_VALIDATE_BOOLEAN);
 
 if ($entity->soft_deleted === 'yes') {
-    if (!$entity->restore($checkboxBooleanValue)) {
+    if (!$entity->restore($restoreFlag)) {
         return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
     }
 }
