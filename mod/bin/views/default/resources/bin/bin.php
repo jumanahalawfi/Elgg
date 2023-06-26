@@ -1,5 +1,4 @@
 <?php
-elgg_require_js('mod/bin/views/default/resources/bin/bin.js');
 
 $list_params = [
     'relationship' => 'deleted_by',
@@ -16,19 +15,11 @@ $content = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($list_par
     return elgg_list_entities($list_params);
 });
 
-$checkbox = elgg_view('input/checkbox', [
-    'name' => 'restore-checkbox',
-    'id' => 'restore-recursively',
-    'value' => 1,
-    'checked' => false,
-    'label' => elgg_echo('Restore Recursively'),
-]);
-
 echo elgg_view_page(
     elgg_echo('collection:object:bin'),
     elgg_view_layout('admin', [
         'title' => elgg_echo('collection:object:bin'),
-        'content' => $checkbox . $content,
+        'content' => $content,
         'filter_id' => 'admin',
     ])
 );
