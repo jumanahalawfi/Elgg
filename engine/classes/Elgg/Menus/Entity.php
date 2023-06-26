@@ -68,7 +68,7 @@ class Entity {
 			return;
 		}
 		
-		if (empty($delete_url) || !$entity->canDelete()) {
+		if (!$entity->canDelete()) {
 			return;
 		}
 
