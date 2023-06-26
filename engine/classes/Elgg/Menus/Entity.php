@@ -94,21 +94,22 @@ class Entity {
 					'priority' => 800,
 				]);
 			}
-            if ($entity instanceof \ElggGroup){
-                $return[] = \ElggMenuItem::factory([
-                    'name' => 'restore non-recursive',
-                    'icon' => 'arrow-up',
-                    'text' => elgg_echo('restore non-recursive'),
-                    'title' => elgg_echo('restore:this'),
-                    'href' => elgg_generate_action_url('entity/restore', [
-                        'deleter_guid' => elgg_get_logged_in_user_guid(),
-                        'guid' => $entity->guid,
-                        'recursive' => false
-                    ]),
-                    'confirm' => elgg_echo('restoreconfirm'),
-                    'priority' => 800,
-                ]);
-            }
+
+			if ($entity instanceof \ElggGroup) {
+				$return[] = \ElggMenuItem::factory([
+					'name' => 'restore non-recursive',
+					'icon' => 'arrow-up',
+					'text' => elgg_echo('restore non-recursive'),
+					'title' => elgg_echo('restore:this'),
+					'href' => elgg_generate_action_url('entity/restore', [
+						'deleter_guid' => elgg_get_logged_in_user_guid(),
+						'guid' => $entity->guid,
+						'recursive' => false
+					]),
+					'confirm' => elgg_echo('restoreconfirm'),
+					'priority' => 800,
+				]);
+			}
 
 			if (!($container->soft_deleted === 'yes')) {
 				$return[] = \ElggMenuItem::factory([
@@ -117,9 +118,9 @@ class Entity {
 					'text' => elgg_echo('restore'),
 					'title' => elgg_echo('restore:this'),
 					'href' => elgg_generate_action_url('entity/restore', [
-                        'deleter_guid' => elgg_get_logged_in_user_guid(),
-                        'guid' => $entity->guid,
-                    ]),
+						'deleter_guid' => elgg_get_logged_in_user_guid(),
+						'guid' => $entity->guid,
+					]),
 					'confirm' => elgg_echo('restoreconfirm'),
 					'priority' => 900,
 				]);
@@ -132,9 +133,9 @@ class Entity {
 			'text' => elgg_echo('delete'),
 			'title' => elgg_echo('delete:this'),
 			'href' => elgg_generate_action_url('entity/delete', [
-                'deleter_guid' => elgg_get_logged_in_user_guid(),
-                'guid' => $entity->guid,
-            ]),
+				'deleter_guid' => elgg_get_logged_in_user_guid(),
+				'guid' => $entity->guid,
+			]),
 			'confirm' => elgg_echo('deleteconfirm'),
 			'priority' => 950,
 		]);
