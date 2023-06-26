@@ -100,11 +100,25 @@ class Entity {
 						'deleter_guid' => elgg_get_logged_in_user_guid(),
 						'entity_owner_guid' => $entity->owner_guid,
 					]),
-					//'confirm' => elgg_echo('restoreandmoveconfirm'),
 					'link_class' => 'elgg-lightbox', // !!
-					'priority' => 900,
+					'priority' => 800,
 				]);
 			}
+            if ($entity instanceof \ElggGroup){
+                $return[] = \ElggMenuItem::factory([
+                    'name' => 'restore non-recursive',
+                    'icon' => 'arrow-up',
+                    'text' => elgg_echo('restore non-recursive'),
+                    'title' => elgg_echo('restore:this'),
+                    'href' => elgg_generate_action_url('entity/restore', [
+                        'deleter_guid' => elgg_get_logged_in_user_guid(),
+                        'guid' => $entity->guid,
+                        'recursive' => false
+                    ]),
+                    'confirm' => elgg_echo('restoreconfirm'),
+                    'priority' => 800,
+                ]);
+            }
 
 			if (!($container->soft_deleted === 'yes')) {
 				$return[] = \ElggMenuItem::factory([
