@@ -1812,6 +1812,15 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		return $this->enabled == 'yes';
 	}
 
+    /**
+     * Is this entity soft deleted?
+     *
+     * @return boolean Whether this entity is soft deleted.
+     */
+    public function isNotSoftDeleted(): bool {
+        return $this->soft_deleted == 'no';
+    }
+
 	/**
 	 * Deletes the entity.
 	 *
