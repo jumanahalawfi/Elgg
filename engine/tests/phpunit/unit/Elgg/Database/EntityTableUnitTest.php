@@ -3,6 +3,7 @@
 namespace Elgg\Database;
 
 use Elgg\Exceptions\Database\UserFetchFailureException;
+use Elgg\Traits\TimeUsing;
 
 /**
  * @group Database
@@ -12,6 +13,7 @@ use Elgg\Exceptions\Database\UserFetchFailureException;
  * @group UnitTests
  */
 class EntityTableUnitTest extends \Elgg\UnitTestCase {
+    use TimeUsing;
 
 	public function testCanGetUserForPermissionsCheckWhileLoggedOut() {
 		$this->assertNull(_elgg_services()->entityTable->getUserForPermissionsCheck());
@@ -79,6 +81,19 @@ class EntityTableUnitTest extends \Elgg\UnitTestCase {
         // Create an object
         $object = $this->createObject();
 
+        // Create the update query for empty params
+        $update = Update::table(EntityTable::TABLE_NAME);
+        $update->set('time_soft_deleted', $update->param($this->getCurrentTime()->getTimestamp(), ELGG_VALUE_TIMESTAMP))
+            ->where($update->compare('guid', '=', $object->guid, ELGG_VALUE_GUID));
+
+        // Add the testing query specification
+        $updateQuerySpec = [
+            'sql' => $update->getSQL(),
+            'params' => $update->getParameters(),
+            'row_count' => 1,
+        ];
+        _elgg_services()->db->addQuerySpec($updateQuerySpec);
+
         // Call the updateTimeSoftDeleted function without passing a timestamp
         $time_soft_deleted = $object->updateTimeSoftDeleted();
         $this->assertEquals($currentTime, $time_soft_deleted);
@@ -98,9 +113,9 @@ class EntityTableUnitTest extends \Elgg\UnitTestCase {
             'params' => $update->getParameters(),
             'row_count' => 1,
         ];
-        _elgg_services()->db->addTestingSpec($updateQuerySpec);
+        _elgg_services()->db->addQuerySpec($updateQuerySpec);
 
-        $timeSoftDeleted = $object->updateTimeSoftDeleted($new_time_soft_deleted);
+        $time_soft_deleted = $object->updateTimeSoftDeleted($new_time_soft_deleted);
         $this->assertEquals($new_time_soft_deleted, $time_soft_deleted);
         $this->assertEquals($new_time_soft_deleted, $object->time_soft_deleted);
 
