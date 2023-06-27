@@ -44,6 +44,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 
 		$query = new AccessWhereClause();
 		$query->ignore_access = true;
+        $query->show_soft_deleted =false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -59,6 +60,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 		$query = new AccessWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -80,9 +82,10 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 		$parts[] = $this->qb->compare('alias.enabled', '=', 'yes', ELGG_VALUE_STRING);
 		$parts[] = $ors;
 
-		$expected = $this->qb->merge($parts);
+        $expected = $this->qb->merge($parts);
 
 		$query = new AccessWhereClause();
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -106,6 +109,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 		$expected = $this->qb->merge($parts);
 
 		$query = new AccessWhereClause();
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', '');
 		$actual = $query->prepare($qb, '');
@@ -129,6 +133,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 
 		$query = new AccessWhereClause();
 		$query->owner_guid_column = 'unit_test';
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -154,6 +159,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 		$expected = $this->qb->merge($parts);
 
 		$query = new AccessWhereClause();
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -180,6 +186,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 
 		$query = new AccessWhereClause();
 		$query->ignore_access = true;
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -206,6 +213,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 
 		$query = new AccessWhereClause();
 		$query->ignore_access = true;
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -241,6 +249,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 
 		$query = new AccessWhereClause();
 		$query->ignore_access = true;
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -274,6 +283,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 
 		$query = new AccessWhereClause();
 		$query->ignore_access = true;
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
