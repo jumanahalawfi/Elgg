@@ -208,24 +208,23 @@ class Entity {
                     'priority' => 900,
                 ]);
             }
-
         }
+
         if ($entity->soft_deleted === 'yes' && $entity instanceof \ElggGroup) {
             $return[] = \ElggMenuItem::factory([
-                'name' => 'delete non-recursive',
+                'name' => 'delete non-recursively',
                 'icon' => 'delete',
-                'text' => elgg_echo('delete non-recursive'),
+                'text' => elgg_echo('delete non-recursively'),
                 'title' => elgg_echo('delete:this'),
                 'href' => elgg_generate_action_url('entity/delete', [
                     'deleter_guid' => elgg_get_logged_in_user_guid(),
                     'guid' => $entity->guid,
-                    'recursive' => false
+                    'recursive'=> false
                 ]),
                 'confirm' => elgg_echo('deleteconfirm'),
-                'priority' => 960,
+                'priority' => 950,
             ]);
         }
-
         $return[] = \ElggMenuItem::factory([
             'name' => 'delete',
             'icon' => 'delete',
@@ -240,10 +239,9 @@ class Entity {
             'priority' => 950,
         ]);
 
-
-
         return $return;
     }
+
 	
 	/**
 	 * Registers menu items for the entity menu of a plugin
