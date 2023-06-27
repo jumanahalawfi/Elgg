@@ -66,7 +66,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->names = ['foo1', 'foo2'];
+        $query->show_soft_deleted = false;
+        $query->names = ['foo1', 'foo2'];
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -88,8 +89,10 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query->values = ['foo1', 'foo2'];
 		$query->value_type = ELGG_VALUE_STRING;
 		$query->case_sensitive = false;
+        $query->show_soft_deleted = false;
 
-		$qb = Select::fromTable('entities', 'alias');
+
+        $qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
 
 		$this->assertEquals($expected, $actual);
@@ -108,7 +111,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->names = ['foo1', 'foo2'];
+        $query->show_soft_deleted = false;
+        $query->names = ['foo1', 'foo2'];
 		$query->values = '%bar%';
 		$query->value_type = ELGG_VALUE_STRING;
 		$query->comparison = 'like';
@@ -130,7 +134,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->entity_guids = 1;
+        $query->show_soft_deleted = false;
+        $query->entity_guids = 1;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -149,7 +154,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->owner_guids = [2, 3];
+        $query->show_soft_deleted = false;
+        $query->owner_guids = [2, 3];
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -177,7 +183,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->created_after = $after;
+        $query->show_soft_deleted = false;
+        $query->created_after = $after;
 		$query->created_before = $before;
 
 		$qb = Select::fromTable('entities', 'alias');
@@ -198,7 +205,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->enabled = 'no';
+        $query->show_soft_deleted = false;
+        $query->enabled = 'no';
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -217,7 +225,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->access_ids = ACCESS_PUBLIC;
+        $query->show_soft_deleted = false;
+        $query->access_ids = ACCESS_PUBLIC;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -240,7 +249,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$expected = $this->qb->merge($parts);
 
 		$query = new AnnotationWhereClause();
-		$query->viewer_guid = 5;
+        $query->show_soft_deleted = false;
+        $query->viewer_guid = 5;
 		$query->entity_guids = 1;
 
 		$qb = Select::fromTable('entities', 'alias');
@@ -271,8 +281,9 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query->entity_guids = 1;
 		$query->sort_by_calculation = 'avg';
 		$query->sort_by_direction = 'desc';
+        $query->show_soft_deleted = false;
 
-		$qb = Select::fromTable('entities', 'alias');
+        $qb = Select::fromTable('entities', 'alias');
 		$qb->addClause($query);
 
 		$this->assertEquals($this->qb->getSQL(), $qb->getSQL());
@@ -282,7 +293,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 	public function testThrowsOnInvalidSortByCalculation() {
 
 		$query = new AnnotationWhereClause();
-		$query->viewer_guid = 5;
+        $query->show_soft_deleted = false;
+        $query->viewer_guid = 5;
 		$query->entity_guids = 1;
 		$query->sort_by_calculation = 'invalid';
 		$query->sort_by_direction = 'desc';
@@ -308,7 +320,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$this->qb->andWhere($expr);
 
 		$query = new AnnotationWhereClause();
-		$query->viewer_guid = 5;
+        $query->show_soft_deleted = false;
+        $query->viewer_guid = 5;
 		$query->entity_guids = 1;
 		$query->sort_by_direction = 'desc';
 
@@ -334,7 +347,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$this->qb->andWhere($expr);
 
 		$query = new AnnotationWhereClause();
-		$query->viewer_guid = 5;
+        $query->show_soft_deleted = false;
+        $query->viewer_guid = 5;
 		$query->entity_guids = 1;
 		$query->sort_by_direction = 'desc';
 		$query->value_type = ELGG_VALUE_INTEGER;
