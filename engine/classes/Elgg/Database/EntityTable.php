@@ -165,6 +165,8 @@ class EntityTable {
 			'time_created' => $insert->param($row->time_created, ELGG_VALUE_TIMESTAMP),
 			'time_updated' => $insert->param($row->time_updated, ELGG_VALUE_TIMESTAMP),
 			'last_action' => $insert->param($row->last_action, ELGG_VALUE_TIMESTAMP),
+            'soft_deleted' => $insert->param($row->soft_deleted, ELGG_VALUE_STRING),
+            'time_soft_deleted' => $insert->param($row->time_soft_deleted, ELGG_VALUE_TIMESTAMP),
 		]);
 
 		return $this->db->insertData($insert);
