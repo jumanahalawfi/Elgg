@@ -30,6 +30,11 @@ class AnnotationWhereClause extends WhereClause {
 	 */
 	public $enabled;
 
+    /**
+     * @var string
+     */
+    public $soft_deleted;
+
 	/**
 	 * @var int|int[]
 	 */
@@ -94,8 +99,12 @@ class AnnotationWhereClause extends WhereClause {
 	 * @var int
 	 */
 	public $viewer_guid;
+    /**
+     * @var bool
+     */
+    public $show_soft_deleted;
 
-	/**
+    /**
 	 * {@inheritdoc}
 	 * @throws DomainException
 	 */
@@ -109,6 +118,7 @@ class AnnotationWhereClause extends WhereClause {
 
 		$access = new AccessWhereClause();
 		$access->use_enabled_clause = $this->use_enabled_clause;
+        $access->show_soft_deleted = $this->show_soft_deleted;
 		$access->ignore_access = $this->ignore_access;
 		$access->viewer_guid = $this->viewer_guid;
 		$access->guid_column = 'entity_guid';
@@ -123,7 +133,7 @@ class AnnotationWhereClause extends WhereClause {
 		$wheres[] = $qb->compare($alias('access_id'), '=', $this->access_ids, ELGG_VALUE_ID);
 		$wheres[] = $qb->between($alias('time_created'), $this->created_after, $this->created_before, ELGG_VALUE_TIMESTAMP);
 
-		if ($this->sort_by_calculation) {
+        if ($this->sort_by_calculation) {
 			if (!in_array(strtolower($this->sort_by_calculation), QueryBuilder::CALCULATIONS)) {
 				throw new DomainException("'{$this->sort_by_calculation}' is not a valid numeric calculation formula");
 			}

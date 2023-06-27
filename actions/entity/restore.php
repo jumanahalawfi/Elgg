@@ -5,6 +5,7 @@
 
 $guid = (int) get_input('guid');
 $deleter_guid = (int) get_input('deleter_guid');
+$recursive = (bool) get_input('recursive', true);
 
 $entity = elgg_call(ELGG_SHOW_SOFT_DELETED_ENTITIES, function () use ($guid){
 	return get_entity($guid);
@@ -25,10 +26,11 @@ $container = $entity->getContainerEntity();
 $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 
+
 if ($entity->soft_deleted === 'yes') {
-	if (!$entity->restore()) {
-		return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
-	}
+    if (!$entity->restore($recursive)) {
+        return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
+    }
 }
 
 // determine forward URL
