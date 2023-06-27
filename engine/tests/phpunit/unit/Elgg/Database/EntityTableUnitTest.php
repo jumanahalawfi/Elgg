@@ -15,8 +15,7 @@ use Elgg\Traits\TimeUsing;
 class EntityTableUnitTest extends \Elgg\UnitTestCase {
     use TimeUsing;
 
-
-    public function testCanGetUserForPermissionsCheckWhileLoggedOut() {
+	public function testCanGetUserForPermissionsCheckWhileLoggedOut() {
 		$this->assertNull(_elgg_services()->entityTable->getUserForPermissionsCheck());
 		
 		$user = $this->createUser();
@@ -82,6 +81,7 @@ class EntityTableUnitTest extends \Elgg\UnitTestCase {
         // Create an object
         $object = $this->createObject();
 
+        // Create the update query for empty params
         $update = Update::table(EntityTable::TABLE_NAME);
         $update->set('time_soft_deleted', $update->param($this->getCurrentTime()->getTimestamp(), ELGG_VALUE_TIMESTAMP))
             ->where($update->compare('guid', '=', $object->guid, ELGG_VALUE_GUID));
