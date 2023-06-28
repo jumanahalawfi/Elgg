@@ -29,8 +29,10 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
+        $query->show_soft_deleted = false;
 
-		$qb = Select::fromTable('entities', 'alias');
+
+        $qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
 
 		$this->assertEquals($expected, $actual);
@@ -47,7 +49,8 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query = new AnnotationWhereClause();
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
-		$query->ids = 1;
+        $query->show_soft_deleted = false;
+        $query->ids = 1;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
@@ -243,13 +246,12 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$access->viewer_guid = 5;
 		$parts[] = $access->prepare($this->qb, 'alias');
 
-		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb4');
+		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb5');
 		$this->qb->param(1, ELGG_VALUE_INTEGER);
 
 		$expected = $this->qb->merge($parts);
 
 		$query = new AnnotationWhereClause();
-        $query->show_soft_deleted = false;
         $query->viewer_guid = 5;
 		$query->entity_guids = 1;
 
@@ -271,7 +273,7 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$access = new AccessWhereClause();
 		$access->viewer_guid = 5;
 		$parts[] = $access->prepare($this->qb, 'alias');
-		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb4');
+		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb5');
 		$this->qb->param(1, ELGG_VALUE_INTEGER);
 		$expr = $this->qb->merge($parts);
 		$this->qb->andWhere($expr);
@@ -281,7 +283,6 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$query->entity_guids = 1;
 		$query->sort_by_calculation = 'avg';
 		$query->sort_by_direction = 'desc';
-        $query->show_soft_deleted = false;
 
         $qb = Select::fromTable('entities', 'alias');
 		$qb->addClause($query);
@@ -314,13 +315,12 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$access = new AccessWhereClause();
 		$access->viewer_guid = 5;
 		$parts[] = $access->prepare($this->qb, 'alias');
-		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb4');
+		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb5');
 		$this->qb->param(1, ELGG_VALUE_INTEGER);
 		$expr = $this->qb->merge($parts);
 		$this->qb->andWhere($expr);
 
 		$query = new AnnotationWhereClause();
-        $query->show_soft_deleted = false;
         $query->viewer_guid = 5;
 		$query->entity_guids = 1;
 		$query->sort_by_direction = 'desc';
@@ -341,13 +341,12 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
 		$access = new AccessWhereClause();
 		$access->viewer_guid = 5;
 		$parts[] = $access->prepare($this->qb, 'alias');
-		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb4');
+		$parts[] = $this->qb->expr()->eq('alias.entity_guid', ':qb5');
 		$this->qb->param(1, ELGG_VALUE_INTEGER);
 		$expr = $this->qb->merge($parts);
 		$this->qb->andWhere($expr);
 
 		$query = new AnnotationWhereClause();
-        $query->show_soft_deleted = false;
         $query->viewer_guid = 5;
 		$query->entity_guids = 1;
 		$query->sort_by_direction = 'desc';
