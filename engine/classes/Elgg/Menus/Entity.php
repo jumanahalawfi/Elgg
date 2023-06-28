@@ -59,190 +59,90 @@ class Entity {
 	 *
 	 * @return void|MenuItems
 	 */
-//	public static function registerDelete(\Elgg\Event $event) {
-//		$entity = $event->getEntityParam();
-//		if (!$entity instanceof \ElggEntity || $entity instanceof \ElggUser || $entity instanceof \ElggPlugin || $entity instanceof \ElggUpgrade) {
-//			// users mostly use the hover menu for their actions
-//			// plugins can't be removed
-//			// upgrades deleting has no point, they'll be rediscovered again
-//			return;
-//		}
-//
-//		if (!$entity->canDelete()) {
-//			return;
-//		}
-//
-//		/* @var $return MenuItems */
-//		$return = $event->getValue();
-//
-//		if ($entity->soft_deleted === 'yes') {
-//			$container = get_entity($entity->container_guid);
-//			if (!($container instanceof \ElggUser)) {
-//				$return[] = \ElggMenuItem::factory([
-//					'name' => 'restore and move',
-//					'icon' => 'arrow-up',
-//					'text' => elgg_echo('restore and move'),
-//					'title' => elgg_echo('restore:this'),
-//					'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
-//						'address' => $entity->getURL(),
-//						'title' => $entity->getDisplayName(),
-//						'entity_guid' => $entity->guid,
-//						'deleter_guid' => elgg_get_logged_in_user_guid(),
-//						'entity_owner_guid' => $entity->owner_guid,
-//					]),
-//					'link_class' => 'elgg-lightbox', // !!
-//					'priority' => 800,
-//				]);
-//			}
-//
-//			if ($entity instanceof \ElggGroup) {
-//				$return[] = \ElggMenuItem::factory([
-//					'name' => 'restore non-recursive',
-//					'icon' => 'arrow-up',
-//					'text' => elgg_echo('restore non-recursive'),
-//					'title' => elgg_echo('restore:this'),
-//					'href' => elgg_generate_action_url('entity/restore', [
-//						'deleter_guid' => elgg_get_logged_in_user_guid(),
-//						'guid' => $entity->guid,
-//						'recursive' => false
-//					]),
-//					'confirm' => elgg_echo('restoreconfirm'),
-//					'priority' => 800,
-//				]);
-//			}
-//
-//			if (!($container->soft_deleted === 'yes')) {
-//				$return[] = \ElggMenuItem::factory([
-//					'name' => 'restore',
-//					'icon' => 'settings',
-//					'text' => elgg_echo('restore'),
-//					'title' => elgg_echo('restore:this'),
-//					'href' => elgg_generate_action_url('entity/restore', [
-//						'deleter_guid' => elgg_get_logged_in_user_guid(),
-//						'guid' => $entity->guid,
-//					]),
-//					'confirm' => elgg_echo('restoreconfirm'),
-//					'priority' => 900,
-//				]);
-//			}
-//		}
-//
-//		$return[] = \ElggMenuItem::factory([
-//			'name' => 'delete',
-//			'icon' => 'delete',
-//			'text' => elgg_echo('delete'),
-//			'title' => elgg_echo('delete:this'),
-//			'href' => elgg_generate_action_url('entity/delete', [
-//				'deleter_guid' => elgg_get_logged_in_user_guid(),
-//				'guid' => $entity->guid,
-//			]),
-//			'confirm' => elgg_echo('deleteconfirm'),
-//			'priority' => 950,
-//		]);
-//
-//		return $return;
-//	}
-    public static function registerDelete(\Elgg\Event $event) {
-        $entity = $event->getEntityParam();
-        if (!$entity instanceof \ElggEntity || $entity instanceof \ElggUser || $entity instanceof \ElggPlugin || $entity instanceof \ElggUpgrade) {
-            // users mostly use the hover menu for their actions
-            // plugins can't be removed
-            // upgrades deleting has no point, they'll be rediscovered again
-            return;
-        }
+	public static function registerDelete(\Elgg\Event $event) {
+		$entity = $event->getEntityParam();
+		if (!$entity instanceof \ElggEntity || $entity instanceof \ElggUser || $entity instanceof \ElggPlugin || $entity instanceof \ElggUpgrade) {
+			// users mostly use the hover menu for their actions
+			// plugins can't be removed
+			// upgrades deleting has no point, they'll be rediscovered again
+			return;
+		}
 
-        if (!$entity->canDelete()) {
-            return;
-        }
+		if (!$entity->canDelete()) {
+			return;
+		}
 
-        /* @var $return MenuItems */
-        $return = $event->getValue();
+		/* @var $return MenuItems */
+		$return = $event->getValue();
 
-        if ($entity->soft_deleted === 'yes') {
-            $container = get_entity($entity->container_guid);
-            if (!($container instanceof \ElggUser)) {
-                $return[] = \ElggMenuItem::factory([
-                    'name' => 'restore and move',
-                    'icon' => 'arrow-up',
-                    'text' => elgg_echo('restore and move'),
-                    'title' => elgg_echo('restore:this'),
-                    'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
-                        'address' => $entity->getURL(),
-                        'title' => $entity->getDisplayName(),
-                        'entity_guid' => $entity->guid,
-                        'deleter_guid' => elgg_get_logged_in_user_guid(),
-                        'entity_owner_guid' => $entity->owner_guid,
-                    ]),
-                    'link_class' => 'elgg-lightbox', // !!
-                    'priority' => 800,
-                ]);
-            }
+		if ($entity->soft_deleted === 'yes') {
+			$container = get_entity($entity->container_guid);
+			if (!($container instanceof \ElggUser)) {
+				$return[] = \ElggMenuItem::factory([
+					'name' => 'restore and move',
+					'icon' => 'arrow-up',
+					'text' => elgg_echo('Restore and Move'),
+					'title' => elgg_echo('restore:this'),
+					'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
+						'address' => $entity->getURL(),
+						'title' => $entity->getDisplayName(),
+						'entity_guid' => $entity->guid,
+						'deleter_guid' => elgg_get_logged_in_user_guid(),
+						'entity_owner_guid' => $entity->owner_guid,
+					]),
+					'link_class' => 'elgg-lightbox', // !!
+					'priority' => 800,
+				]);
+			}
 
-            if ($entity instanceof \ElggGroup) {
-                $return[] = \ElggMenuItem::factory([
-                    'name' => 'restore non-recursive',
-                    'icon' => 'arrow-up',
-                    'text' => elgg_echo('restore non-recursive'),
-                    'title' => elgg_echo('restore:this'),
-                    'href' => elgg_generate_action_url('entity/restore', [
-                        'deleter_guid' => elgg_get_logged_in_user_guid(),
-                        'guid' => $entity->guid,
-                        'recursive' => false
-                    ]),
-                    'confirm' => elgg_echo('restoreconfirm'),
-                    'priority' => 800,
-                ]);
-            }
+			if ($entity instanceof \ElggGroup) {
+				$return[] = \ElggMenuItem::factory([
+					'name' => 'restore non-recursive',
+					'icon' => 'arrow-up',
+					'text' => elgg_echo('Restore Non-Recursively'),
+					'title' => elgg_echo('restore:this'),
+					'href' => elgg_generate_action_url('entity/restore', [
+						'deleter_guid' => elgg_get_logged_in_user_guid(),
+						'guid' => $entity->guid,
+						'recursive' => false
+					]),
+					'confirm' => elgg_echo('restoreconfirm'),
+					'priority' => 800,
+				]);
+			}
 
-            if (!($container->soft_deleted === 'yes')) {
-                $return[] = \ElggMenuItem::factory([
-                    'name' => 'restore',
-                    'icon' => 'settings',
-                    'text' => elgg_echo('restore'),
-                    'title' => elgg_echo('restore:this'),
-                    'href' => elgg_generate_action_url('entity/restore', [
-                        'deleter_guid' => elgg_get_logged_in_user_guid(),
-                        'guid' => $entity->guid,
-                    ]),
-                    'confirm' => elgg_echo('restoreconfirm'),
-                    'priority' => 900,
-                ]);
-            }
-        }
+			if (!($container->soft_deleted === 'yes')) {
+				$return[] = \ElggMenuItem::factory([
+					'name' => 'restore',
+					'icon' => 'settings',
+					'text' => elgg_echo('Restore'),
+					'title' => elgg_echo('restore:this'),
+					'href' => elgg_generate_action_url('entity/restore', [
+						'deleter_guid' => elgg_get_logged_in_user_guid(),
+						'guid' => $entity->guid,
+					]),
+					'confirm' => elgg_echo('restoreconfirm'),
+					'priority' => 900,
+				]);
+			}
+		}
 
-        if ($entity->soft_deleted === 'yes' && $entity instanceof \ElggGroup) {
-            $return[] = \ElggMenuItem::factory([
-                'name' => 'delete non-recursively',
-                'icon' => 'delete',
-                'text' => elgg_echo('delete non-recursively'),
-                'title' => elgg_echo('delete:this'),
-                'href' => elgg_generate_action_url('entity/delete', [
-                    'deleter_guid' => elgg_get_logged_in_user_guid(),
-                    'guid' => $entity->guid,
-                    'recursive'=> false
-                ]),
-                'confirm' => elgg_echo('deleteconfirm'),
-                'priority' => 950,
-            ]);
-        }
-        $return[] = \ElggMenuItem::factory([
-            'name' => 'delete',
-            'icon' => 'delete',
-            'text' => elgg_echo('delete'),
-            'title' => elgg_echo('delete:this'),
-            'href' => elgg_generate_action_url('entity/delete', [
-                'deleter_guid' => elgg_get_logged_in_user_guid(),
-                'guid' => $entity->guid,
-                'recursive' => true
-            ]),
-            'confirm' => elgg_echo('deleteconfirm'),
-            'priority' => 950,
-        ]);
+		$return[] = \ElggMenuItem::factory([
+			'name' => 'delete',
+			'icon' => 'delete',
+			'text' => elgg_echo('Delete'),
+			'title' => elgg_echo('delete:this'),
+			'href' => elgg_generate_action_url('entity/delete', [
+				'deleter_guid' => elgg_get_logged_in_user_guid(),
+				'guid' => $entity->guid,
+			]),
+			'confirm' => elgg_echo('deleteconfirm'),
+			'priority' => 950,
+		]);
 
-        return $return;
-    }
+		return $return;
+	}
 
-	
 	/**
 	 * Registers menu items for the entity menu of a plugin
 	 *
