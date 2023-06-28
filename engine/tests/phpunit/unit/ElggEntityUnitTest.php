@@ -43,14 +43,16 @@ class ElggEntityUnitTest extends \Elgg\UnitTestCase {
 	/**
 	 * @dataProvider protectedAttributeProvider
 	 */
-	public function testMagicSettingAndGettingProtectedAttributeThrowsException($attribute) {
-		$this->expectException(InvalidArgumentException::class);
-		$this->expectExceptionMessageMatches("/{$attribute}/");
-		$this->obj->$attribute = 'foo';
-		$this->assertNotEquals('foo', $this->obj->$attribute);
-	}
-	
-	/**
+    public function testMagicSettingAndGettingProtectedAttributeThrowsException($attribute) {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessageMatches("/{$attribute}/");
+        $originalValue = $this->obj->$attribute;
+        $this->obj->$attribute = 'foo';
+        $this->assertNotEquals('foo', $this->obj->$attribute);
+        $this->obj->$attribute = $originalValue;
+    }
+
+    /**
 	 * @dataProvider protectedAttributeProvider
 	 */
 	public function testUnsettingProtectedAttributeThrowsException($attribute) {
