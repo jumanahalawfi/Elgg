@@ -1527,7 +1527,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		}
 
 
-		if (!_elgg_services()->events->trigger('softDelete', $this->type, $this)) {
+		if (!_elgg_services()->events->trigger('soft_delete', $this->type, $this)) {
 			return false;
 		}
 
@@ -1567,7 +1567,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 					$subentities = elgg_get_entities($options);
 					/* @var $subentity \ElggEntity */
 					foreach ($subentities as $subentity) {
-						$subentity->addRelationship($guid, 'softDeleted_with');
+						$subentity->addRelationship($guid, 'soft_deleted_with');
 						get_entity($deleter_guid)->addRelationship($subentity->guid, 'deleted_by');
 						$subentity->softDelete($deleter_guid, true);
 					}
@@ -1579,7 +1579,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 		$this->disableAnnotations();
 
-		$softDeleted = _elgg_services()->entityTable->softDelete($this);
+		$soft_deleted = _elgg_services()->entityTable->softDelete($this);
 
 		$time_soft_deleted = isset($this->attributes['time_soft_deleted']) ? (int) $this->attributes['time_soft_deleted'] : $now;
 
@@ -1590,15 +1590,15 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			$this->unban();
 		}
 
-		if ($softDeleted) {
+		if ($soft_deleted) {
 			$this->invalidateCache();
 
-			$this->attributes['softDeleted'] = 'yes';
+			$this->attributes['soft_deleted'] = 'yes';
 
-			_elgg_services()->events->triggerAfter('softDelete', $this->type, $this);
+			_elgg_services()->events->triggerAfter('soft_delete', $this->type, $this);
 		}
 
-		return $softDeleted;
+		return $soft_deleted;
 	}
 
 	/**
@@ -1629,8 +1629,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			$this->enableAnnotations();
 
 			if ($recursive) {
-				$softDeleted_with_it = elgg_get_entities([
-					'relationship' => 'softDeleted_with',
+				$soft_deleted_with_it = elgg_get_entities([
+					'relationship' => 'soft_deleted_with',
 					'relationship_guid' => $this->guid,
 					'inverse_relationship' => true,
 					'limit' => false,
@@ -1638,9 +1638,9 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 					'batch_inc_offset' => false,
 				]);
 
-				foreach ($softDeleted_with_it as $e) {
+				foreach ($soft_deleted_with_it as $e) {
 					$e->restore($recursive);
-					$e->removeRelationship($this->guid, 'softDeleted_with');
+					$e->removeRelationship($this->guid, 'soft_deleted_with');
 					$e->removeAllRelationships('deleted_by', true);
 				}
 			}
@@ -1650,7 +1650,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$this->removeAllRelationships('deleted_by', true);
 
 		if ($result) {
-			$this->attributes['softDeleted'] = 'no';
+			$this->attributes['soft_deleted'] = 'no';
 			_elgg_services()->events->triggerAfter('restore', $this->type, $this);
 		}
 
