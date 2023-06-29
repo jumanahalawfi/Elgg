@@ -1117,23 +1117,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		return (int) $this->time_updated;
 	}
 
-    /**
-     * Returns the UNIX epoch time that this entity was last updated
-     *
-     * @return int UNIX epoch time
-     */
-    public function getTimeSoftDeleted(): int {
-        return (int) $this->time_soft_deleted;
-    }
-    /**
-     * returns the soft_deleted value
-     *
-     * @return string soft_deleted
-     */
-    public function getSoftDeleted(): string {
-        return $this->soft_deleted;
-    }
-
 	/**
 	 * Gets the URL for this entity.
 	 *
@@ -1937,8 +1920,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$object->container_guid = $this->getContainerGUID();
 		$object->time_created = date('c', $this->getTimeCreated());
 		$object->time_updated = date('c', $this->getTimeUpdated());
-        $object->soft_deleted = $this->getSoftDeleted();
-        $object->time_soft_deleted = $this->getTimeSoftDeleted();
 		$object->url = $this->getURL();
 		$object->read_access = (int) $this->access_id;
 		return $object;
