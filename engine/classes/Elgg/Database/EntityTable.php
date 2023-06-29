@@ -166,7 +166,7 @@ class EntityTable {
 			'time_updated' => $insert->param($row->time_updated, ELGG_VALUE_TIMESTAMP),
 			'last_action' => $insert->param($row->last_action, ELGG_VALUE_TIMESTAMP),
             'soft_deleted' => $insert->param($row->soft_deleted, ELGG_VALUE_STRING),
-            'time_soft_deleted' => $insert->param($row->time_soft_deleted, ELGG_VALUE_TIMESTAMP),
+            'time_soft_deleted' => $insert->param($row->time_soft_deleted, ELGG_VALUE_INTEGER),
 		]);
 
 		return $this->db->insertData($insert);
@@ -187,6 +187,8 @@ class EntityTable {
 			->set('access_id', $update->param($row->access_id, ELGG_VALUE_ID))
 			->set('time_created', $update->param($row->time_created, ELGG_VALUE_TIMESTAMP))
 			->set('time_updated', $update->param($row->time_updated, ELGG_VALUE_TIMESTAMP))
+            ->set('soft_deleted', $update->param($row->soft_deleted, ELGG_VALUE_STRING))
+            ->set('time_soft_deleted', $update->param($row->time_soft_deleted, ELGG_VALUE_STRING))
 			->where($update->compare('guid', '=', $guid, ELGG_VALUE_GUID));
 
 		return $this->db->updateData($update);
