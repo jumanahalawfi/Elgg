@@ -49,6 +49,7 @@ class EntityWhereClauseUnitTest extends UnitTestCase {
 		$query->ignore_access = true;
 		$query->use_enabled_clause = false;
         $query->show_soft_deleted = false;
+
         $query->guids = 1;
 
 		$qb = Select::fromTable('entities', 'alias');

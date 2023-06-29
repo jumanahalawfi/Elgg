@@ -15,7 +15,7 @@ use Elgg\Traits\TimeUsing;
 class EntityTableUnitTest extends \Elgg\UnitTestCase {
     use TimeUsing;
 
-	public function testCanGetUserForPermissionsCheckWhileLoggedOut() {
+    public function testCanGetUserForPermissionsCheckWhileLoggedOut() {
 		$this->assertNull(_elgg_services()->entityTable->getUserForPermissionsCheck());
 		
 		$user = $this->createUser();

@@ -67,7 +67,7 @@ class Entity {
 			// upgrades deleting has no point, they'll be rediscovered again
 			return;
 		}
-		
+
 		if (!$entity->canDelete()) {
 			return;
 		}
@@ -81,7 +81,7 @@ class Entity {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'restore and move',
 					'icon' => 'arrow-up',
-					'text' => elgg_echo('restore and move'),
+					'text' => elgg_echo('Restore and Move'),
 					'title' => elgg_echo('restore:this'),
 					'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
 						'address' => $entity->getURL(),
@@ -99,7 +99,7 @@ class Entity {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'restore non-recursive',
 					'icon' => 'arrow-up',
-					'text' => elgg_echo('restore non-recursive'),
+					'text' => elgg_echo('Restore Non-Recursively'),
 					'title' => elgg_echo('restore:this'),
 					'href' => elgg_generate_action_url('entity/restore', [
 						'deleter_guid' => elgg_get_logged_in_user_guid(),
@@ -115,7 +115,7 @@ class Entity {
 				$return[] = \ElggMenuItem::factory([
 					'name' => 'restore',
 					'icon' => 'settings',
-					'text' => elgg_echo('restore'),
+					'text' => elgg_echo('Restore'),
 					'title' => elgg_echo('restore:this'),
 					'href' => elgg_generate_action_url('entity/restore', [
 						'deleter_guid' => elgg_get_logged_in_user_guid(),
@@ -130,7 +130,7 @@ class Entity {
 		$return[] = \ElggMenuItem::factory([
 			'name' => 'delete',
 			'icon' => 'delete',
-			'text' => elgg_echo('delete'),
+			'text' => elgg_echo('Delete'),
 			'title' => elgg_echo('delete:this'),
 			'href' => elgg_generate_action_url('entity/delete', [
 				'deleter_guid' => elgg_get_logged_in_user_guid(),
@@ -139,10 +139,10 @@ class Entity {
 			'confirm' => elgg_echo('deleteconfirm'),
 			'priority' => 950,
 		]);
-		
+
 		return $return;
 	}
-	
+
 	/**
 	 * Registers menu items for the entity menu of a plugin
 	 *

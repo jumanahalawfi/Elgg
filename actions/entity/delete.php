@@ -28,12 +28,13 @@ $container = $entity->getContainerEntity();
 $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 
+$non_recursive_delete = (bool) get_input('recursive', true);
 if ($entity->soft_deleted === 'no' && $entity->hasCapability('soft_deletable')) {
 	if (!$entity->softDelete($deleter_guid)) {
 		return elgg_error_response(elgg_echo('entity:delete:fail', [$display_name]));
 	}
 } else {
-	if (!$entity->delete()) {
+	if (!$entity->delete($non_recursive_delete)) {
 		return elgg_error_response(elgg_echo('entity:delete:fail', [$display_name]));
 	}
 }
