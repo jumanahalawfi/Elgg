@@ -1367,7 +1367,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
         $this->attributes['soft_deleted'] = $soft_deleted;
         $this->attributes['time_soft_deleted'] = $time_soft_deleted;
 
-		// We are writing this new entity to cache to make sure subsequent calls
+        // We are writing this new entity to cache to make sure subsequent calls
 		// to get_entity() load the entity from cache and not from the DB. This
 		// MUST come before the metadata and annotation writes below!
 		$this->cache();

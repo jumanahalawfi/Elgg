@@ -44,7 +44,7 @@ class AccessWhereClauseUnitTest extends UnitTestCase {
 
 		$query = new AccessWhereClause();
 		$query->ignore_access = true;
-        $query->show_soft_deleted =false;
+        $query->show_soft_deleted = false;
 
 		$qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
