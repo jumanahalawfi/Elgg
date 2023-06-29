@@ -72,7 +72,7 @@ class AnnotationWhereClauseUnitTest extends UnitTestCase {
         $query->show_soft_deleted = false;
         $query->names = ['foo1', 'foo2'];
 
-		$qb = Select::fromTable('entities', 'alias');
+        $qb = Select::fromTable('entities', 'alias');
 		$actual = $query->prepare($qb, 'alias');
 
 		$this->assertEquals($expected, $actual);
