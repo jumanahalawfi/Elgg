@@ -202,6 +202,8 @@ class ElggEntityUnitTest extends \Elgg\UnitTestCase {
 			'time_updated',
 			'container_guid',
 			'owner_guid',
+            'soft_deleted',
+            'time_soft_deleted',
 			'url',
 			'read_access',
 		);
