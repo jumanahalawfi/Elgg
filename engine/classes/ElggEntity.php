@@ -1281,8 +1281,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$access_id = (int) $this->attributes['access_id'];
 		$now = $this->getCurrentTime()->getTimestamp();
 		$time_created = isset($this->attributes['time_created']) ? (int) $this->attributes['time_created'] : $now;
-		$soft_deleted = $this->attributes['soft_deleted'];
-		$time_soft_deleted = $this->attributes['time_soft_deleted'];
+        $soft_deleted = $this->attributes['soft_deleted'];
+        $time_soft_deleted = (int) $this->attributes['time_soft_deleted'];
 
 		$container_guid = $this->attributes['container_guid'];
 		if ($container_guid == 0) {
