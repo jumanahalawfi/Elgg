@@ -94,12 +94,13 @@ class AnnotationWhereClause extends WhereClause {
 	 * @var int
 	 */
 	public $viewer_guid;
-    /**
-     * @var bool
-     */
-    public $show_soft_deleted;
 
-    /**
+	/**
+	 * @var bool
+	 */
+	public $show_soft_deleted;
+
+	/**
 	 * {@inheritdoc}
 	 * @throws DomainException
 	 */
@@ -113,8 +114,8 @@ class AnnotationWhereClause extends WhereClause {
 
 		$access = new AccessWhereClause();
 		$access->use_enabled_clause = $this->use_enabled_clause;
-        $access->show_soft_deleted = $this->show_soft_deleted;
-        $access->ignore_access = $this->ignore_access;
+		$access->show_soft_deleted = $this->show_soft_deleted;
+		$access->ignore_access = $this->ignore_access;
 		$access->viewer_guid = $this->viewer_guid;
 		$access->guid_column = 'entity_guid';
 		$wheres[] = $access->prepare($qb, $table_alias);

@@ -225,7 +225,6 @@ return [
 			'menu:entity:group:group' => [
 				'Elgg\Groups\Menus\Entity::register' => [],
 				'Elgg\Groups\Menus\Entity::registerFeature' => [],
-				'Elgg\Groups\Menus\Entity::registerRestore' => [],
 			],
 			'menu:filter:groups/all' => [
 				'Elgg\Groups\Menus\Filter::registerGroupsAll' => [],

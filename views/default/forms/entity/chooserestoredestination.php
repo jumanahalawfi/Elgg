@@ -41,42 +41,42 @@ if (elgg_is_admin_logged_in()) {
 
 $destination_container_names = [$entity_owner_guid => 'assign back to creator'];
 foreach ($soft_deleted_groups as $group) {
-    $destination_container_names += array($group->guid => $group->getDisplayName());
+	$destination_container_names += [$group->guid => $group->getDisplayName()];
 }
 
 
 $fields = [
-    [
-        '#type' => 'select',
-        '#label' => elgg_echo('Destination group'),
-        'required' => true,
-        'name' => 'destination_container_guid',
-        'options_values' => $destination_container_names,
-    ],
-    [
-        '#type' => 'hidden',
-        'name' => 'entity_guid',
-        'value' => $entity_guid,
-    ],
-    [
-        '#type' => 'hidden',
-        'name' => 'deleter_guid',
-        'value' => $deleter_guid,
-    ],
+	[
+		'#type' => 'select',
+		'#label' => elgg_echo('Destination group'),
+		'required' => true,
+		'name' => 'destination_container_guid',
+		'options_values' => $destination_container_names,
+	],
+	[
+		'#type' => 'hidden',
+		'name' => 'entity_guid',
+		'value' => $entity_guid,
+	],
+	[
+		'#type' => 'hidden',
+		'name' => 'deleter_guid',
+		'value' => $deleter_guid,
+	],
 ];
 
 foreach ($fields as $field) {
-    echo elgg_view_field($field);
+	echo elgg_view_field($field);
 }
 
 
 // TODO: elgg_echo is currently hardcoded and not translated
 $footer = elgg_view('input/submit', [
-    'value' => elgg_echo('Confirm'),
+	'value' => elgg_echo('Confirm'),
 ]);
 $footer .= elgg_view('input/button', [
-    'class' => 'elgg-button-cancel',
-    'value' => elgg_echo('Cancel'),
+	'class' => 'elgg-button-cancel',
+	'value' => elgg_echo('Cancel'),
 ]);
 
 elgg_set_form_footer($footer);
