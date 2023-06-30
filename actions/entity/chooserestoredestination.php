@@ -26,7 +26,7 @@ $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 if ($entity->getSoftDeleted() === 'yes') {
     // restore-and-move: move the entity to new container. Currently NOT fail-safe against fail restore.
-    if (!$entity->restore(true)) {
+    if (!$entity->restore(false)) {
         return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
     }
     if (!($entity->overrideEntityContainerID($entity->guid, $entity->type, $entity->subtype, $destination_container_guid))){
