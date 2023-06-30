@@ -74,7 +74,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_created',
 		'time_updated',
 		'last_action',
-	];
+        'time_soft_deleted'
+    ];
 
 	/**
 	 * Holds metadata until entity is saved.  Once the entity is saved,
@@ -269,6 +270,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 						$this->attributes[$name] = null;
 					}
 					break;
+                case 'soft_deleted':
+                    throw new ElggInvalidArgumentException(elgg_echo('ElggEntity:Error:SetSoftDeleted', ['softDelete() / restore()']));
 				default:
 					$this->attributes[$name] = $value;
 					break;
@@ -1908,6 +1911,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$object->container_guid = $this->getContainerGUID();
 		$object->time_created = date('c', $this->getTimeCreated());
 		$object->time_updated = date('c', $this->getTimeUpdated());
+        $object->soft_deleted = $this->getSoftDeleted();
+        $object->time_soft_deleted = $this->time_soft_deleted;
 		$object->url = $this->getURL();
 		$object->read_access = (int) $this->access_id;
 		return $object;
