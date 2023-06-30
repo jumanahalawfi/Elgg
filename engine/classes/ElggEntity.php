@@ -1437,10 +1437,10 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$time_created = (int) $this->time_created;
 		$time = $this->getCurrentTime()->getTimestamp();
 		$soft_deleted = $this->soft_deleted;
-		$time_soft_deleted = $this->time_soft_deleted;
+        $time_soft_deleted = (int) $this->time_soft_deleted;
 
 
-		if ($access_id == ACCESS_DEFAULT) {
+        if ($access_id == ACCESS_DEFAULT) {
 			throw new ElggInvalidArgumentException('ACCESS_DEFAULT is not a valid access level. See its documentation in constants.php');
 		}
 
