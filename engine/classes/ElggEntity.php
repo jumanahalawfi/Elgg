@@ -60,7 +60,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_updated',
 		'last_action',
 		'enabled',
-		'soft_deleted'
+		'soft_deleted',
+        'time_soft_deleted'
 	];
 
 	/**
