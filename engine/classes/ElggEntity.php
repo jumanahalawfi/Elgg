@@ -48,7 +48,7 @@ use Elgg\Traits\Entity\Subscriptions;
 abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 	use Subscriptions;
-	
+
 	public const PRIMARY_ATTR_NAMES = [
 		'guid',
 		'type',
@@ -74,7 +74,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_created',
 		'time_updated',
 		'last_action',
-        'time_soft_deleted'
+		'time_soft_deleted'
 	];
 
 	/**
@@ -205,7 +205,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			foreach ($metadata_array as $metadata) {
 				$metadata_names[] = $metadata->name;
 			}
-			
+
 			// arrays are stored with multiple enties per name
 			$metadata_names = array_unique($metadata_names);
 
@@ -240,8 +240,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if (array_key_exists($name, $this->attributes)) {
 			// if an attribute is 1 (integer) and it's set to "1" (string), don't consider that a change.
 			if (is_int($this->attributes[$name])
-					&& is_string($value)
-					&& ((string) $this->attributes[$name] === $value)) {
+				&& is_string($value)
+				&& ((string) $this->attributes[$name] === $value)) {
 				return;
 			}
 
@@ -270,13 +270,13 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 						$this->attributes[$name] = null;
 					}
 					break;
-                case 'soft_deleted':
-                    throw new ElggInvalidArgumentException(elgg_echo('ElggEntity:Error:SetSoftDeleted', ['softDelete() / restore()']));
-                default:
+				case 'soft_deleted':
+					throw new ElggInvalidArgumentException(elgg_echo('ElggEntity:Error:SetSoftDeleted', ['softDelete() / restore()']));
+				default:
 					$this->attributes[$name] = $value;
 					break;
 			}
-			
+
 			return;
 		}
 
@@ -380,7 +380,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if ($value === null || $value === '') {
 			return $this->deleteMetadata($name);
 		}
-		
+
 		// normalize value to an array that we will loop over
 		// remove indexes if value already an array.
 		if (is_array($value)) {
@@ -432,11 +432,11 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			$metadata->entity_guid = $this->guid;
 			$metadata->name = $name;
 			$metadata->value = $value_tmp;
-			
+
 			if (!empty($value_type)) {
 				$metadata->value_type = $value_type;
 			}
-			
+
 			$md_id = _elgg_services()->metadataTable->create($metadata, $multiple);
 			if ($md_id === false) {
 				return false;
@@ -464,7 +464,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 				// only save if value array contains data
 				$this->temp_metadata[$name] = $value;
 			}
-			
+
 			return true;
 		}
 
@@ -499,7 +499,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			} else {
 				$this->temp_metadata = [];
 			}
-			
+
 			return true;
 		}
 
@@ -547,7 +547,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	public function addRelationship(int $guid_two, string $relationship): bool {
 		return _elgg_services()->relationshipsTable->add($this->guid, (string) $relationship, (int) $guid_two);
 	}
-	
+
 	/**
 	 * Check if this entity has a relationship with another entity
 	 *
@@ -562,7 +562,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	public function hasRelationship(int $guid_two, string $relationship): bool {
 		return (bool) _elgg_services()->relationshipsTable->check($this->guid, $relationship, $guid_two);
 	}
-	
+
 	/**
 	 * Return the relationship if this entity has a relationship with another entity
 	 *
@@ -575,7 +575,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	public function getRelationship(int $guid_two, string $relationship): ?\ElggRelationship {
 		return _elgg_services()->relationshipsTable->check($this->guid, $relationship, $guid_two) ?: null;
 	}
-	
+
 	/**
 	 * Gets an array of entities with a relationship to this entity.
 	 *
@@ -590,7 +590,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$options['relationship_guid'] = $this->guid;
 		return elgg_get_entities($options);
 	}
-	
+
 	/**
 	 * Gets the number of entities from a specific relationship type
 	 *
@@ -618,7 +618,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	public function removeRelationship(int $guid_two, string $relationship): bool {
 		return _elgg_services()->relationshipsTable->remove($this->guid, (string) $relationship, (int) $guid_two);
 	}
-	
+
 	/**
 	 * Remove all relationships to or from this entity.
 	 *
@@ -665,13 +665,13 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 				'annotation_name' => $name,
 			]);
 		}
-		
+
 		if ($name) {
 			unset($this->temp_annotations[$name]);
 		} else {
 			$this->temp_annotations = [];
 		}
-		
+
 		return true;
 	}
 
@@ -767,26 +767,26 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			$this->temp_annotations[$name] = $value;
 			return true;
 		}
-		
+
 		if (!$owner_guid) {
 			$owner_guid = _elgg_services()->session_manager->getLoggedInUserGuid();
 		}
-		
+
 		$annotation = new ElggAnnotation();
 		$annotation->entity_guid = $this->guid;
 		$annotation->name = $name;
 		$annotation->value = $value;
 		$annotation->owner_guid = $owner_guid;
 		$annotation->access_id = $access_id;
-		
+
 		if (!empty($value_type)) {
 			$annotation->value_type = $value_type;
 		}
-		
+
 		if ($annotation->save()) {
 			return $annotation->id;
 		}
-		
+
 		return false;
 	}
 
@@ -882,14 +882,14 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if (!$this->hasCapability('commentable')) {
 			return 0;
 		}
-		
+
 		$params = ['entity' => $this];
 		$num = _elgg_services()->events->triggerResults('comments:count', $this->getType(), $params);
 
 		if (is_int($num)) {
 			return $num;
 		}
-		
+
 		return \Elgg\Comments\DataService::instance()->getCommentsCount($this);
 	}
 
@@ -907,7 +907,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$options['owner_guid'] = $this->guid;
 		return _elgg_services()->accessCollections->getEntityCollections($options);
 	}
-	
+
 	/**
 	 * Returns the first ACL owned by the entity with a given subtype
 	 *
@@ -922,14 +922,14 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if ($subtype === '') {
 			throw new ElggInvalidArgumentException(__METHOD__ . ' requires $subtype to be non empty');
 		}
-		
+
 		$acls = $this->getOwnedAccessCollections([
 			'subtype' => $subtype,
 		]);
-		
+
 		return elgg_extract(0, $acls);
 	}
-	
+
 	/**
 	 * Check if the given user has access to this entity
 	 *
@@ -983,7 +983,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if (empty($type) || empty($subtype)) {
 			throw new ElggInvalidArgumentException(__METHOD__ . ' requires $type and $subtype to be set');
 		}
-		
+
 		return _elgg_services()->userCapabilities->canWriteToContainer($this, $type, $subtype, $user_guid);
 	}
 
@@ -1050,7 +1050,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if ($this->guid && !array_key_exists('subtype', $this->orig_attributes)) {
 			$this->orig_attributes['subtype'] = $this->attributes['subtype'];
 		}
-		
+
 		$this->attributes['subtype'] = $subtype;
 	}
 
@@ -1281,21 +1281,21 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$access_id = (int) $this->attributes['access_id'];
 		$now = $this->getCurrentTime()->getTimestamp();
 		$time_created = isset($this->attributes['time_created']) ? (int) $this->attributes['time_created'] : $now;
-        $soft_deleted = $this->attributes['soft_deleted'];
-        $time_soft_deleted = (int) $this->attributes['soft_deleted'];
+		$soft_deleted = $this->attributes['soft_deleted'];
+		$time_soft_deleted = (int) $this->attributes['time_soft_deleted'];
 
 		$container_guid = $this->attributes['container_guid'];
 		if ($container_guid == 0) {
 			$container_guid = $owner_guid;
 			$this->attributes['container_guid'] = $container_guid;
 		}
-		
+
 		$container_guid = (int) $container_guid;
 
 		if ($access_id == ACCESS_DEFAULT) {
 			throw new ElggInvalidArgumentException('ACCESS_DEFAULT is not a valid access level. See its documentation in constants.php');
 		}
-		
+
 		if ($access_id == ACCESS_FRIENDS) {
 			throw new ElggInvalidArgumentException('ACCESS_FRIENDS is not a valid access level. See its documentation in constants.php');
 		}
@@ -1338,7 +1338,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 				return false;
 			}
 		}
-		
+
 		if (!_elgg_services()->events->triggerBefore('create', $this->type, $this)) {
 			return false;
 		}
@@ -1353,8 +1353,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			'time_created' => $time_created,
 			'time_updated' => $now,
 			'last_action' => $now,
-            'soft_deleted' => $soft_deleted,
-            'time_soft_deleted' => $time_soft_deleted
+			'soft_deleted' => $soft_deleted,
+			'time_soft_deleted' => $time_soft_deleted
 		], $this->attributes);
 
 		if (!$guid) {
@@ -1367,12 +1367,12 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$this->attributes['time_updated'] = (int) $now;
 		$this->attributes['last_action'] = (int) $now;
 		$this->attributes['container_guid'] = (int) $container_guid;
-        $this->attributes['soft_deleted'] = $soft_deleted;
-        $this->attributes['time_soft_deleted'] = (int) $time_soft_deleted;
+		$this->attributes['soft_deleted'] = $soft_deleted;
+		$this->attributes['time_soft_deleted'] = (int) $time_soft_deleted;
 
 
 
-        // We are writing this new entity to cache to make sure subsequent calls
+		// We are writing this new entity to cache to make sure subsequent calls
 		// to get_entity() load the entity from cache and not from the DB. This
 		// MUST come before the metadata and annotation writes below!
 		$this->cache();
@@ -1395,15 +1395,15 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 			$this->temp_annotations = [];
 		}
-		
+
 		if (isset($container) && !$container instanceof \ElggUser) {
 			// users have their own logic for setting last action
 			$container->updateLastAction();
 		}
-		
+
 		// for BC reasons this event is still needed (for example for notifications)
 		_elgg_services()->events->trigger('create', $this->type, $this);
-		
+
 		_elgg_services()->events->triggerAfter('create', $this->type, $this);
 
 		return $guid;
@@ -1436,14 +1436,14 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$container_guid = (int) $this->container_guid;
 		$time_created = (int) $this->time_created;
 		$time = $this->getCurrentTime()->getTimestamp();
-        $soft_deleted = $this->soft_deleted;
+		$soft_deleted = $this->soft_deleted;
         $time_soft_deleted = (int) $this->time_soft_deleted;
 
 
-		if ($access_id == ACCESS_DEFAULT) {
+        if ($access_id == ACCESS_DEFAULT) {
 			throw new ElggInvalidArgumentException('ACCESS_DEFAULT is not a valid access level. See its documentation in constants.php');
 		}
-	
+
 		if ($access_id == ACCESS_FRIENDS) {
 			throw new ElggInvalidArgumentException('ACCESS_FRIENDS is not a valid access level. See its documentation in constants.php');
 		}
@@ -1456,8 +1456,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			'time_created' => $time_created,
 			'time_updated' => $time,
 			'guid' => $guid,
-            'soft_deleted' => $soft_deleted,
-            'time_soft_deleted' => $time_soft_deleted
+			'soft_deleted' => $soft_deleted,
+			'time_soft_deleted' => $time_soft_deleted
 		]);
 		if ($ret === false) {
 			return false;
@@ -1635,7 +1635,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			$this->enableAnnotations();
 
 			if ($recursive) {
-				$softDeleted_with_it = elgg_get_entities([
+				$soft_deleted_with_it = elgg_get_entities([
 					'relationship' => 'soft_deleted_with',
 					'relationship_guid' => $this->guid,
 					'inverse_relationship' => true,
@@ -1644,7 +1644,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 					'batch_inc_offset' => false,
 				]);
 
-				foreach ($softDeleted_with_it as $e) {
+				foreach ($soft_deleted_with_it as $e) {
 					$e->restore($recursive);
 					$e->removeRelationship($this->guid, 'soft_deleted_with');
 					$e->removeAllRelationships('deleted_by', true);
@@ -1730,7 +1730,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 						if (!$subentity->isEnabled()) {
 							continue;
 						}
-						
+
 						$subentity->addRelationship($guid, 'disabled_with');
 						$subentity->disable($reason, true);
 					}
@@ -1778,7 +1778,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 		$result = elgg_call(ELGG_IGNORE_ACCESS | ELGG_SHOW_DISABLED_ENTITIES, function() use ($recursive) {
 			$result = _elgg_services()->entityTable->enable($this);
-				
+
 			$this->deleteMetadata('disable_reason');
 			$this->enableAnnotations();
 
@@ -1818,14 +1818,14 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		return $this->enabled == 'yes';
 	}
 
-    /**
-     * Is this entity soft deleted?
-     *
-     * @return boolean Whether this entity is soft deleted.
-     */
-    public function isNotSoftDeleted(): bool {
-        return $this->soft_deleted == 'no';
-    }
+	/**
+	 * Is this entity soft deleted?
+	 *
+	 * @return boolean Whether this entity is soft deleted.
+	 */
+	public function isNotSoftDeleted(): bool {
+		return $this->soft_deleted == 'no';
+	}
 
 	/**
 	 * Deletes the entity.
@@ -1923,9 +1923,9 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$object->container_guid = $this->getContainerGUID();
 		$object->time_created = date('c', $this->getTimeCreated());
 		$object->time_updated = date('c', $this->getTimeUpdated());
-        $object->soft_deleted = $this->getSoftDeleted();
-        $object->time_soft_deleted = $this->time_soft_deleted;
-        $object->url = $this->getURL();
+		$object->soft_deleted = $this->getSoftDeleted();
+		$object->time_soft_deleted = $this->time_soft_deleted;
+		$object->url = $this->getURL();
 		$object->read_access = (int) $this->access_id;
 		return $object;
 	}
@@ -1995,7 +1995,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if (!isset($tag_names)) {
 			$tag_names = ['tags'];
 		}
-		
+
 		if ($tag_names && !is_array($tag_names)) {
 			$tag_names = [$tag_names];
 		}
@@ -2006,7 +2006,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 			if (elgg_is_empty($tags)) {
 				continue;
 			}
-			
+
 			// if a single tag, metadata returns a string.
 			// if multiple tags, metadata returns an array.
 			if (is_array($tags)) {
@@ -2087,10 +2087,10 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 	 */
 	public function updateLastAction(int $posted = null): int {
 		$posted = _elgg_services()->entityTable->updateLastAction($this, $posted);
-		
+
 		$this->attributes['last_action'] = $posted;
 		$this->cache();
-	
+
 		return $posted;
 	}
 
@@ -2144,11 +2144,11 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if (!$this->guid) {
 			return false;
 		}
-		
+
 		if (_elgg_services()->session_manager->getIgnoreAccess()) {
 			return false;
 		}
-		
+
 		return $this->_is_cacheable;
 	}
 
@@ -2170,7 +2170,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		if (!$persist) {
 			return;
 		}
-		
+
 		$tmp = $this->volatile;
 
 		// don't store volatile data
@@ -2195,7 +2195,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		_elgg_services()->entityCache->delete($this->guid);
 		_elgg_services()->dataCache->get('metadata')->delete($this->guid);
 	}
-	
+
 	/**
 	 * Checks a specific capability is enabled for the entity type/subtype
 	 *
