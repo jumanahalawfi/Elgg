@@ -24,13 +24,11 @@ $soft_deleted_groups = elgg_get_entities([
 	'no_results' => elgg_echo('groups:none'),
 ]);
 
-// see: input/select.php
-$destination_container_names = [];
-
-$destination_container_names = [$entity_owner_guid => 'assign back to original user'];
+$destination_container_names = [$entity_owner_guid => 'assign back to creator'];
 foreach ($soft_deleted_groups as $group) {
 	$destination_container_names += [$group->guid => $group->getDisplayName()];
 }
+
 
 $fields = [
 	[

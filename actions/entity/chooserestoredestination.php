@@ -1,12 +1,7 @@
 <?php
 /**
- * Action for choosing destination to restore a post to.
+ * Action for choosing destination to restore a post to. For now, just redirect to the stub page for selecting target group
  */
-
-/**
- * ACTIONS WILL RECEIVE THE VARIABLES FORWARDED BY FORM, USING THE 'name' OF THE FIELD
- */
-
 
 $guid = (int) get_input('entity_guid');
 $deleter_guid = (int) get_input('deleter_guid');
@@ -28,14 +23,15 @@ $display_name = $entity->getDisplayName() ?: elgg_echo('entity:restore:item');
 $soft_deletable_entities = elgg_entity_types_with_capability('soft_deletable');
 
 
-if ($entity->soft_deleted === 'yes') {
+if ($entity->getSoftDeleted() === 'yes') {
 	// restore-and-move: move the entity to new container. Currently NOT fail-safe against fail restore.
-
-	if (!$entity->restore()) {
+	if (!$entity->restore(true)) {
 		return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
 	}
 
-	$entity->overrideEntityContainerID($entity->guid, $entity->type, $entity->subtype, $destination_container_guid);
+	if (!($entity->overrideEntityContainerID($entity->guid, $entity->type, $entity->subtype, $destination_container_guid))) {
+		return elgg_error_response(elgg_echo('entity:restore:fail', [$display_name]));
+	}
 }
 
 $type = $entity->getType();
@@ -108,5 +104,7 @@ if (get_input('show_success', true)) {
 		}
 	}
 }
+
+$message = 'New container is: ' . $entity->getDisplayName(); // test
 
 return elgg_ok_response('', $message, $forward_url);
