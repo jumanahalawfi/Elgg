@@ -1454,12 +1454,10 @@ class ElggPlugin extends ElggObject {
 		if (!elgg_is_empty($version)) {
 			return $version;
 		}
-        var_dump($version);
 
 		// elgg-plugin version
 		$plugin_config = $this->getStaticConfig('plugin', []);
 		$version = elgg_extract('version', $plugin_config);
-        var_dump($version);
 		if (!elgg_is_empty($version)) {
 			return $version;
 		}
