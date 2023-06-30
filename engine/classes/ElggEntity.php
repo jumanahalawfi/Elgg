@@ -1610,8 +1610,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 	/**
 	 * Restore the entity
-     *
-	 * @param bool $recursive    Recursively restores all entities soft deleted with the entity?
+	 *
+	 * @param bool $recursive Recursively restores all entities soft deleted with the entity?
 	 * @see access_show_hiden_entities()
 	 * @return bool
 	 */
