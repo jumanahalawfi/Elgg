@@ -61,7 +61,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'last_action',
 		'enabled',
 		'soft_deleted',
-        'time_soft_deleted'
+		'time_soft_deleted'
 	];
 
 	/**
@@ -1438,10 +1438,10 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$time_created = (int) $this->time_created;
 		$time = $this->getCurrentTime()->getTimestamp();
 		$soft_deleted = $this->soft_deleted;
-        $time_soft_deleted = (int) $this->time_soft_deleted;
+		$time_soft_deleted = (int) $this->time_soft_deleted;
 
 
-        if ($access_id == ACCESS_DEFAULT) {
+		if ($access_id == ACCESS_DEFAULT) {
 			throw new ElggInvalidArgumentException('ACCESS_DEFAULT is not a valid access level. See its documentation in constants.php');
 		}
 
@@ -1610,8 +1610,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 	/**
 	 * Restore the entity
-	 *
-	 * @param int  $deleter_guid GUID of the deleting user
+     *
 	 * @param bool $recursive    Recursively restores all entities soft deleted with the entity?
 	 * @see access_show_hiden_entities()
 	 * @return bool
@@ -1863,10 +1862,10 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 	/**
 	 * this method overrides an entity id with id of the group/user.
-	 * @param int $entity_guid the GUID of the entity which will have its container overridden
-	 * @param string $type  the type of the entity which will have its container overridden
-	 * @param string $subtype  the subtype of the entity which will have its container overridden
-	 * @param int $group_guid  the GUID of the new container
+	 * @param int    $entity_guid the GUID of the entity which will have its container overridden
+	 * @param string $type        the type of the entity which will have its container overridden
+	 * @param string $subtype     the subtype of the entity which will have its container overridden
+	 * @param int    $group_guid  the GUID of the new container
 	 * @return bool
 	 */
 	public static function overrideEntityContainerID(int $entity_guid, string $type, string $subtype, int $group_guid) {

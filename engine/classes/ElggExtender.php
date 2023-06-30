@@ -37,7 +37,7 @@ abstract class ElggExtender extends \ElggData {
 		'owner_guid',
 		'access_id',
 		'time_created',
-        'time_soft_deleted'
+		'time_soft_deleted'
 	];
 
 	/**
@@ -52,7 +52,7 @@ abstract class ElggExtender extends \ElggData {
 		$this->attributes['owner_guid'] = null;
 		$this->attributes['access_id'] = ACCESS_PRIVATE;
 		$this->attributes['enabled'] = 'yes';
-        $this->attributes['soft_deleted'] = 'no';
+		$this->attributes['soft_deleted'] = 'no';
 	}
 
 	/**
@@ -174,10 +174,10 @@ abstract class ElggExtender extends \ElggData {
 		$object->value = $this->value;
 		$object->time_created = date('c', $this->getTimeCreated());
 		$object->read_access = $this->access_id;
-        $object->soft_deleted = $this->soft_deleted;
-        $object->time_soft_deleted = $this->time_soft_deleted;
+		$object->soft_deleted = $this->soft_deleted;
+		$object->time_soft_deleted = $this->time_soft_deleted;
 
-        $params[$this->getType()] = $this;
+		$params[$this->getType()] = $this;
 				
 		return _elgg_services()->events->triggerResults('to:object', $this->getType(), $params, $object);
 	}
