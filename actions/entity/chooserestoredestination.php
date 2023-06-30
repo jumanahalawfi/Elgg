@@ -1,6 +1,6 @@
 <?php
 /**
- * Action for choosing destination to restore a post to. For now, just redirect to the stub page for selecting target group
+ * Action for choosing destination to restore a post to.
  *
  */
 
@@ -105,7 +105,5 @@ if (get_input('show_success', true)) {
         }
     }
 }
-
-$message = 'New container is: ' . $entity->getDisplayName(); // test
 
 return elgg_ok_response('', $message, $forward_url);
