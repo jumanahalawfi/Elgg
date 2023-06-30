@@ -109,15 +109,6 @@ abstract class ElggData implements CollectionItemInterface,
         return $this->attributes['soft_deleted'];
     }
 
-    /**
-     * Returns the UNIX epoch time that this entity was created
-     *
-     * @return int UNIX epoch time
-     */
-    public function getTimeSoftDeleted(): int {
-        return (int) $this->attributes['time_soft_deleted'];
-    }
-
 	/**
 	 * Get a plain old object copy for public consumption
 	 *

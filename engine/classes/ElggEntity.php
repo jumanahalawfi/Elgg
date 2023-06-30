@@ -1924,7 +1924,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$object->time_created = date('c', $this->getTimeCreated());
 		$object->time_updated = date('c', $this->getTimeUpdated());
         $object->soft_deleted = $this->getSoftDeleted();
-        $object->time_soft_deleted = date('c', $this->getTimeSoftDeleted());
+        $object->time_soft_deleted = $this->time_soft_deleted;
         $object->url = $this->getURL();
 		$object->read_access = (int) $this->access_id;
 		return $object;
