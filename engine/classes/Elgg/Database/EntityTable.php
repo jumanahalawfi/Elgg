@@ -188,7 +188,7 @@ class EntityTable {
 			->set('time_created', $update->param($row->time_created, ELGG_VALUE_TIMESTAMP))
 			->set('time_updated', $update->param($row->time_updated, ELGG_VALUE_TIMESTAMP))
 			->set('soft_deleted', $update->param($row->soft_deleted, ELGG_VALUE_STRING))
-			->set('time_soft_deleted', $update->param($row->time_soft_deleted, ELGG_VALUE_INTEGER))
+			->set('time_soft_deleted', $update->param($row->time_soft_deleted, ELGG_VALUE_STRING))
 			->where($update->compare('guid', '=', $guid, ELGG_VALUE_GUID));
 
 		return $this->db->updateData($update);

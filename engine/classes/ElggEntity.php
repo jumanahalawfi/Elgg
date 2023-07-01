@@ -61,7 +61,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'last_action',
 		'enabled',
 		'soft_deleted',
-		'time_soft_deleted'
 	];
 
 	/**
@@ -75,7 +74,6 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'time_created',
 		'time_updated',
 		'last_action',
-		'time_soft_deleted'
 	];
 
 	/**
@@ -1283,7 +1281,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$now = $this->getCurrentTime()->getTimestamp();
 		$time_created = isset($this->attributes['time_created']) ? (int) $this->attributes['time_created'] : $now;
 		$soft_deleted = $this->attributes['soft_deleted'];
-		$time_soft_deleted = (int) $this->attributes['time_soft_deleted'];
+		$time_soft_deleted = $this->attributes['time_soft_deleted'];
 
 		$container_guid = $this->attributes['container_guid'];
 		if ($container_guid == 0) {
@@ -1369,7 +1367,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$this->attributes['last_action'] = (int) $now;
 		$this->attributes['container_guid'] = (int) $container_guid;
 		$this->attributes['soft_deleted'] = $soft_deleted;
-		$this->attributes['time_soft_deleted'] = (int) $time_soft_deleted;
+		$this->attributes['time_soft_deleted'] = $time_soft_deleted;
 
 
 
@@ -1438,7 +1436,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		$time_created = (int) $this->time_created;
 		$time = $this->getCurrentTime()->getTimestamp();
 		$soft_deleted = $this->soft_deleted;
-		$time_soft_deleted = (int) $this->time_soft_deleted;
+		$time_soft_deleted = $this->time_soft_deleted;
 
 
 		if ($access_id == ACCESS_DEFAULT) {
