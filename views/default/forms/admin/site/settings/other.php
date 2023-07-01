@@ -31,6 +31,15 @@ $body .= elgg_view_field([
 ]);
 
 $body .= elgg_view_field([
+    '#type' => 'number',
+    '#label' => elgg_echo('config:bin_cleanup_grace_period:label'),
+    '#help' => elgg_echo('config:bin_cleanup_grace_period:help'),
+    'name' => 'bin_cleanup_grace_period',
+    'value' => (int) elgg_get_config('bin_cleanup_grace_period'),
+    'min' => 1,
+]);
+
+$body .= elgg_view_field([
 	'#type' => 'number',
 	'#label' => elgg_echo('config:message_delay:label'),
 	'#help' => elgg_echo('config:message_delay:help'),
