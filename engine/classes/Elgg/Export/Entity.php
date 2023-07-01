@@ -16,7 +16,7 @@ use DateTime;
  * @property string $url
  * @property int    $read_access
  * @property string $soft_deleted
- * @property int    $time_soft_deleted
+ * @property string $time_soft_deleted
  *
  */
 class Entity extends Data {

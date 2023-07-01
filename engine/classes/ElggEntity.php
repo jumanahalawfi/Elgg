@@ -61,8 +61,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'last_action',
 		'enabled',
 		'soft_deleted',
-		'time_soft_deleted'
-	];
+        'time_soft_deleted'
+    ];
 
 	/**
 	 * @var string[] attributes that are integers
@@ -1588,9 +1588,7 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 
 		$soft_deleted = _elgg_services()->entityTable->softDelete($this);
 
-		$time_soft_deleted = isset($this->attributes['time_soft_deleted']) ? (int) $this->attributes['time_soft_deleted'] : $now;
-
-		$this->updateTimeSoftDeleted($time_soft_deleted);
+		$this->updateTimeSoftDeleted();
 
 
 		if ($unban_after) {
