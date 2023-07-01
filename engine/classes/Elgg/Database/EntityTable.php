@@ -493,7 +493,7 @@ class EntityTable {
 	public function restore(\ElggEntity $entity): bool {
 		$qb = Update::table(self::TABLE_NAME);
 		$qb->set('soft_deleted', $qb->param('no', ELGG_VALUE_STRING))
-            ->set('time_soft_deleted', $qb->param(0, ELGG_VALUE_TIMESTAMP))
+			->set('time_soft_deleted', $qb->param(0, ELGG_VALUE_TIMESTAMP))
 			->where($qb->compare('guid', '=', $entity->guid, ELGG_VALUE_GUID));
 
 		return $this->db->updateData($qb);

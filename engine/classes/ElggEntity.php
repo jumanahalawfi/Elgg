@@ -61,8 +61,8 @@ abstract class ElggEntity extends \ElggData implements EntityIcon {
 		'last_action',
 		'enabled',
 		'soft_deleted',
-        'time_soft_deleted'
-    ];
+		'time_soft_deleted'
+	];
 
 	/**
 	 * @var string[] attributes that are integers
