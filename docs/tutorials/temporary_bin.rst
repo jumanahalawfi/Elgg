@@ -19,7 +19,7 @@ The `Entities`_ and the `Annotations`_ tables have been given two extra columns:
    If the bin plugin is enabled, soft deleted content is stored in the Temporary Bin.
 -  **time\_soft\_deleted** Unix timestamp of when the entity was soft deleted.
 
-These columns have been added in the migration file ``/engine/schema/migrations/20230606155735_add_columns_to_entities_and_annotations_tables.php``.
+Columns have been added in the migration file ``/engine/schema/migrations/20230606155735_add_columns_to_entities_and_annotations_tables.php``.
 
 
 Defining an entity as soft deletable
