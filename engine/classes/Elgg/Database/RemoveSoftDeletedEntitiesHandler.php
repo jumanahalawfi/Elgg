@@ -24,7 +24,8 @@ class RemoveSoftDeletedEntitiesHandler {
 						return $qb->compare("{$main_alias}.soft_deleted", '=', 'yes', ELGG_VALUE_STRING);
 					},
 					function(QueryBuilder $qb, $main_alias) {
-						return $qb->compare("{$main_alias}.time_soft_deleted", '<', \Elgg\Values::normalizeTimestamp('-30 days'));
+                        $grace_period = elgg_get_config('bin_cleanup_grace_period',30);
+						return $qb->compare("{$main_alias}.time_soft_deleted", '<', \Elgg\Values::normalizeTimestamp('-'.$grace_period.' days'));
 					}
 				],
 			]);
