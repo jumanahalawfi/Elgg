@@ -12,7 +12,7 @@ Database changes
 ----------------
 
 To accomodate the temporary bin, new columns have been added to the Elgg database.
-The `Entities`_ and the `Annotations`_ tables have been given two extra columns:
+The Entities and the Annotations tables have been given two extra columns:
 
 -  **soft\_deleted** If this is 'yes' an entity is marked for soft deletion, 
    if 'no' (default) the entity is visibile within the regular site.
@@ -235,23 +235,23 @@ These actions are created in the generic ``/engine/classes/Elgg/Menus/Entity.php
 This option is always there for group owned entities, but is forced whenever the owning group is soft deleted
 .. code-block:: php
 
-	if (!($container instanceof \ElggUser)) {
-		$return[] = \ElggMenuItem::factory([
-			'name' => 'restore and move',
-			'icon' => 'arrow-up',
-			'text' => elgg_echo('Restore and Move'),
-			'title' => elgg_echo('restore:this'),
-			'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
-				'address' => $entity->getURL(),
-				'title' => $entity->getDisplayName(),
-				'entity_guid' => $entity->guid,
-				'deleter_guid' => elgg_get_logged_in_user_guid(),
-				'entity_owner_guid' => $entity->owner_guid,
-			]),
-			'link_class' => 'elgg-lightbox', // !!
-			'priority' => 800,
-		]);
-	}
+    if (!($container instanceof \ElggUser)) {
+        $return[] = \ElggMenuItem::factory([
+            'name' => 'restore and move',
+            'icon' => 'arrow-up',
+            'text' => elgg_echo('Restore and Move'),
+            'title' => elgg_echo('restore:this'),
+            'href' => elgg_http_add_url_query_elements('ajax/form/entity/chooserestoredestination', [
+                'address' => $entity->getURL(),
+                'title' => $entity->getDisplayName(),
+                'entity_guid' => $entity->guid,
+                'deleter_guid' => elgg_get_logged_in_user_guid(),
+                'entity_owner_guid' => $entity->owner_guid,
+            ]),
+            'link_class' => 'elgg-lightbox', // !!
+            'priority' => 800,
+    ]);
+}
 
 - Restore Non-Recursively: to restore a group but still leave the owned content soft deleted
 
@@ -341,7 +341,7 @@ columns to 'no' and '0', respectively.
 
 	return $result;
 
-The ``entityTable.restore($this)`` updates the **soft\_deleted** and **time\_soft\_deleted** database
+The ``entityTable->restore($this)`` updates the **soft\_deleted** and **time\_soft\_deleted** database
 values for the current entity. If ``$recursive`` is true, entities with a ``soft_deleted_with`` relationship
 to the current entity are also called and restored. 
 Relationships ``soft_deleted_with`` and ``deleted_by``are then removed and attributes reset.
@@ -449,7 +449,7 @@ Delete
 ------
 
 Clicking the delete action on an entity from the temporary bin will invoke the ``/actions/entity/delete.php`` action.
-As discussed in the :doc:`/guides/temporary_bin#Defining an entity as soft deletable` section, a check is done to see
+As discussed in the :ref:`<tutorials/temporary_bin#Defining an entity as soft deletable>` section, a check is done to see
 if the entity is soft deleted. As it always will be when the action is called from the temporary bin, the ``delete()`` method
 of ``/engine/classes/ElggEntity.php/`` will be called. Since this is a core Elgg feature it will not be further elaborated on here.
 Entities are then permanently deleted from the database.
@@ -498,7 +498,7 @@ An ``elgg_call()`` is performed to retrieve all entities which have the ``soft_d
 have a **soft\_deleted** value of 'yes' and **time\_soft\_deleted** Unix value which is aged more than retention (grace) period.
 These entities are then deleted from the database.
 
-The retention period can be edited from the administrators Site Settings page. It is saved as a config setting in the `Elgg_Config`_ table.
+The retention period can be edited from the administrators Site Settings page. It is saved as a config setting in the Elgg_Config table.
 It has a default value of 30 days.
 This is done in ``actions/admin/site/settings.php``
 
