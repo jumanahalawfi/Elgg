@@ -133,7 +133,7 @@ if ($friendly_time_number_of_days === '') {
 
 $bin_cleanup_grace_period = get_input('bin_cleanup_grace_period', 30);
 if ($bin_cleanup_grace_period === '') {
-    $bin_cleanup_grace_period = 30;
+	$bin_cleanup_grace_period = 30;
 }
 
 elgg_save_config('friendly_time_number_of_days', (int) $friendly_time_number_of_days);
