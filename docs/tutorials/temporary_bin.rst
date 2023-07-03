@@ -233,6 +233,7 @@ These actions are created in the generic ``/engine/classes/Elgg/Menus/Entity.php
 - Restore and Move: specifically for entities that belong to a group(either active or soft_deleted)
 
 This option is always there for group owned entities, but is forced whenever the owning group is soft deleted
+
 .. code-block:: php
 
     if (!($container instanceof \ElggUser)) {
@@ -250,8 +251,8 @@ This option is always there for group owned entities, but is forced whenever the
             ]),
             'link_class' => 'elgg-lightbox', // !!
             'priority' => 800,
-    ]);
-}
+    	]);
+	}
 
 - Restore Non-Recursively: to restore a group but still leave the owned content soft deleted
 
@@ -449,7 +450,7 @@ Delete
 ------
 
 Clicking the delete action on an entity from the temporary bin will invoke the ``/actions/entity/delete.php`` action.
-As discussed in the :ref:`<tutorials/temporary_bin#Defining an entity as soft deletable>` section, a check is done to see
+As discussed in the 'Defining an entity as soft deletable section', a check is done to see
 if the entity is soft deleted. As it always will be when the action is called from the temporary bin, the ``delete()`` method
 of ``/engine/classes/ElggEntity.php/`` will be called. Since this is a core Elgg feature it will not be further elaborated on here.
 Entities are then permanently deleted from the database.
