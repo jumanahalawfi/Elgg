@@ -340,10 +340,8 @@ columns to 'no' and '0', respectively.
 		_elgg_services()->events->triggerAfter('restore', $this->type, $this);
 	}
 
-	return $result;
-
-The ``restore()`` of the ``entityTable`` updates the **soft\_deleted** and **time\_soft\_deleted** database
-values for the current entity. If ``$recursive`` is true, entities with a ``soft_deleted_with`` relationship
+The ``restore()`` function of the ``entityTable`` updates the **soft\_deleted** and **time\_soft\_deleted**
+database values for the current entity. If ``$recursive`` is true, entities with a ``soft_deleted_with`` relationship
 to the current entity are also called and restored. 
 Relationships ``soft_deleted_with`` and ``deleted_by``are then removed and attributes reset.
 
